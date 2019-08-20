@@ -1,0 +1,44 @@
+
+
+Cloned the Source code to the location: C:\Users\Administrator\Documents\LoginApp
+
+maven goals: mvn clean install
+
+C:\Users\Administrator\Documents\LoginApp>mvn clean install
+
+copying the pakcage from  C:\Users\Administrator\Documents\LoginApp\target\web-app-1.0.0-SNAPSHOT.war
+
+					To 
+
+						  C:\Users\Administrator\Downloads\apache-tomcat-7.0.90\webapps
+						  
+						  
+Job-1:
+
+	Task-1: Clone the repo to my local workspace.
+
+	Task-2: Build: Specify & run the maven goals where the source code is available.
+
+	Task-3: Deployment: Copy the package from workpspace to tomcat server (webapp).
+	
+CI/CD - Build automation tools: Jenkins, Teamcity, bamboo etc
+
+Maven, Jenkins, GitHub, Tomcat, Nexus,
+
+git, java, maven, tomcat, jenkins
+
+--------------------------------------------------------------------------------------------------
+
+Phase-1 Videos:
+
+	Phase-1.1:
+	https://drive.google.com/file/d/14bt1Xt2sMbM4o4c3ODLzyrHP2t4pI3No/view?usp=sharing
+
+	Phase1.2-v1:
+	https://drive.google.com/file/d/1lyIWqIJXxomkIDX3ef2QxFoKQjBBRYGH/view?usp=sharing
+
+	Phase1.2-v2:
+	https://drive.google.com/file/d/1eNHpbnTQl62E8roW2ldPg_WAZr8juYzj/view?usp=sharing
+
+	Phase1.3:
+	https://drive.google.com/file/d/1rFUeIBIaIJyVzuVWmOtGPu0hKy0bfOqc/view?usp=sharing
