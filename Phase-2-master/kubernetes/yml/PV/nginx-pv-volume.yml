@@ -1,0 +1,15 @@
+# pods/storage/pv-volume.yaml  
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nginx-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/nginx_vol"

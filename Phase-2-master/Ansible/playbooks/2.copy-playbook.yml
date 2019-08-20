@@ -1,0 +1,4 @@
+- hosts: all
+  tasks:
+    - name: copy index.html
+      copy: src=./rhelfiles.txt dest=/root

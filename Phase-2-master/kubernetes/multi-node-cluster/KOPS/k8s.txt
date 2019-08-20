@@ -1,0 +1,38 @@
+
+Aim: Build & Beploy - make sure my application is available 24/7.
+
+Tools: AWS, GitHub, java, maven, tomcat, Jenkins, docker, k8s
+
+Step-1: RHEL - Jenkins (java, tomcat, git, maven etc)
+
+Step-2: Ubuntu - 
+
+	2.1. install docker & k8s
+	
+	2.2. setup k8s cluster
+	
+	AKI*****MBPYQ
+	
+	x79ry*******+GLlKv
+	
+	export bucket_name=k8s-1-kops-state-store
+	
+	aws s3api create-bucket --bucket ${bucket_name} --region us-east-2 --create-bucket-configuration LocationConstraint=us-east-2
+
+	kops create cluster --node-count=3 --node-size=t2.medium --zones=us-east-2b --name=${KOPS_CLUSTER_NAME}
+
+Step-3: configure job in jenkins - CD/CD
+
+	Stage-1: code checkout
+	
+	Stage-2: build (using maven)
+	
+	Stage-3: code quality analysius - sonar
+	
+	Stage-4: deploy the package to nexus
+	
+	Stage-5: creating image & push the images to docker hub
+	
+	Stage-6: create/update the deployment in k8s cluster
+	
+	

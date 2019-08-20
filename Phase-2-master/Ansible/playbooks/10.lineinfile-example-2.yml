@@ -1,0 +1,23 @@
+# lineinfile module is useful to add a new line or replace the line.
+#
+# Create a text file src/word.txt with below three line
+#
+#    word-1
+#
+#    word-2
+#    
+#    word-1
+#
+# Using below play book we are going to replace the line "word-2"
+#
+# since it is the local operation, host should be 'localhost'
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+  - name: add a line to file
+    lineinfile:
+       path: src/word.txt
+       regexp: 'word-2'
+       line: '   word-2.1'

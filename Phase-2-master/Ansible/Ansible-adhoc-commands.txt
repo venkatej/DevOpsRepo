@@ -1,0 +1,64 @@
+ansible-doc modulename
+
+ansible <hosts> [-m <module_name>] -a <"arguments"> -u <username> [--become]
+
+ansible all -m ping
+
+ansible all -m copy -a "src=./sample.txt dest=/root"
+
+# Install tree package on target servers
+ansible all -m yum -a "name=tree state=latest"
+
+# Uninstall tree package on target severs
+ansible all -m yum -a "name=tree state=absent"
+
+# Install apache on linux
+ansible all -m yum -a "name=httpd state=latest"
+
+#Start the service on target severs
+ansible all -m service -a 'name=httpd state=started'
+
+#Uninstall apache on linux
+ansible all -m yum -a "name=httpd state=absent"
+
+#Create directories in target hosts
+ansible all -m file -a "dest=/root/ansi state=directory"
+
+#Create file on target hosts
+ansible all -m file -a "dest=/root/ansi/newfile-ansi.txt state=touch"
+
+#Delete directories in target hosts
+ansible all -m file -a "dest=/root/ansi state=absent"
+
+#Run the shell commands on target hosts
+ansible all -m shell -a 'touch newfile.txt'
+
+#Create User
+ansible all -m user -a 'name=user1 password=somepassword'
+
+#Delete user
+ansible all -m user -a 'name=user1 state=absent'
+
+#It's used for gathering facts about the hosts
+ansible all -m setup
+
+#To know configuired machine user location details
+ansible all -a "pwd"
+
+#Execute linux commands on target hosts
+ansible all -m command -a "ls"
+
+ansible all -m command -a "yum install tree -y"
+
+Or
+
+ansible all -a "yum install tree -y"
+
+ansible all -m command -a "yum update"
+
+ansible all -a "uptime"
+
+ansible all -m yum -a "name=git state=latest"
+
+ansible all -m git -a "repo=https://github.com/DevOpsBasicSetup/Phase-2.git dest=/root/DevOpsBasicSetup/Phase-2 version=HEAD"
+

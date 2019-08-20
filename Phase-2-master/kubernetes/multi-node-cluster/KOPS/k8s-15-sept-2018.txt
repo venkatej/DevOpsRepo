@@ -1,0 +1,55 @@
+ns-314.awsdns-39.com.
+ns-1929.awsdns-49.co.uk.
+ns-1176.awsdns-19.org.
+ns-992.awsdns-60.net.
+
+AKIAJDE3H4MCAGMQY6SQ
+
+Kt8wnq+DtChjTBjLDdtmAGsRqU0CcUBIfZogAQy3
+
+export bucket_name=k8s-state-store
+
+aws s3api create-bucket --bucket ${bucket_name} --region us-east-2 --create-bucket-configuration LocationConstraint=us-east-2
+
+aws s3api put-bucket-versioning --bucket ${bucket_name} --versioning-configuration Status=Enabled
+
+
+export bucket_name=k8s-state-store
+export KOPS_CLUSTER_NAME=venkat.k8s.local	
+export KOPS_STATE_STORE=s3://${bucket_name}
+
+export KOPS_CLUSTER_NAME=k8scluster.svnreddydevops.com
+export KOPS_CLUSTER_NAME=k8scluster.k8s.local
+
+
+kops create cluster --node-count=2 --node-size=t2.medium --zones us-west-2a --name=${KOPS_CLUSTER_NAME}
+
+etcd-us-west-2a.internal.k8scluster.svnreddydevops.com
+
+kops create cluster --node-count=3 --node-size=t2.medium --zones=us-west-1a --name=${KOPS_CLUSTER_NAME}
+
+ kops update cluster k8scluster.svnreddydevops.com --yes
+ 
+ 
+ kops update cluster --name ${KOPS_CLUSTER_NAME} --yes
+ \\
+ 
+ http://etcd-events-a.internal.k8scluster.svnreddydevops.com:30369/
+ 
+ http://etcd-a.internal.k8scluster.svnreddydevops.com:30369/
+ 
+ http://api.internal.k8scluster.svnreddydevops.com:30369/
+ 
+ http://api.internal.k8scluster.svnreddydevops.com:32040/
+ 
+ 
+ 
+ 1. sg & elastic IP
+ 
+ 2. record sets - application specific record sets
+ 
+ 3. print the service url on jenkins job console.
+
+
+
+

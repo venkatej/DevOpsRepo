@@ -1,0 +1,5 @@
+- hosts:
+    - rhel-1
+    - rhel-2
+  tasks:
+    - action: ping

@@ -1,0 +1,1447 @@
+ 1  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add
+    2  vi /etc/apt/sources.list.d/kubernetes.list
+    3  cat /etc/apt/sources.list.d/kubernetes.list
+    4  apt-get update
+    5  apt-get install -y docker.io
+    6  docker version
+    7  apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+    8  kubeadm init
+    9  kubectl get node
+   10  mkdir -p $HOME/.kube
+   11  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+   12  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+   13  kubectl get node
+   14  kubectl get pods --all-namespaces
+   15  sysctl net.bridge.bridge-nf-call-iptables=1
+   16  export kubever=$(kubectl version | base64 | tr -d '\n')
+   17  kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+   18  kubectl get nodes
+   19  kubectl get pods --all-namespaces
+   20  kubectl get nodes
+   21  kubectl get pods --all-namespaces
+   22  kubectl get nodes
+   23  kubectl get pods --all-namespaces
+   24  kubectl run testing --image=nginx --replicas=3 deployment "testing" created
+   25  kubectl get pods
+   26  kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+   27  vi service.yaml
+   28  cat service.yaml
+   29  kubectl apply -f service.yaml
+   30  kubectl apply -f service.yaml
+   31  kubectl apply -f service.yaml --validate=false
+   32  vi rolebinding.yaml
+   33  kubectl apply -f rolebinding.yaml
+   34  vi rolebinding.yaml
+   35  kubectl apply -f rolebinding.yaml
+   36  kubectl apply -f rolebinding.yaml --validate=false
+   37  kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+   38  kubectl proxy
+   39  curl http://127.0.0.1:8001
+   40  curl http://172.31.0.189:8001
+   41  kubectl get pods
+   42  kubectl apply -f https://k8s.io/examples/application/deployment.yaml
+   43  kubectl describe deployment nginx-deployment
+   44  kubectl get pods -l app=nginx
+   45  kubectl describe pod nginx-deployment-67594d6bf6-hl2g9
+   46  kubectl get deployments
+   47  kubectl get pods
+   48  kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+   49  kubectl proxy
+   50  kubectl proxy --help
+   51  kubectl get deployment
+   52  kubectl describe deployment
+   53  kubectl scale deployment nginx-deployment --replicas=10
+   54  kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80
+   55  kubectl get deploy
+   56  kubectl set image deploy/nginx-deployment nginx=nginx:latest
+   57  kubectl get rs
+   58  kubectl get deploy
+   59  kubectl get pods
+   60  kubectl describe pods nginx-deployment-7f4bfdf584-9gtrl
+   61  kubectl describe pod nginx-deployment-7f4bfdf584-9gtrl | grep IP | awk '{print $2}'
+   62  history
+
+   ====================================================================================================================================
+   Administrator@EC2AMAZ-8AU796Q MINGW64 ~/Desktop                                m
+The authenticity of host 'ec2-18-191-168-132.us-east-2.compute.amazonaws.com (18.191.168.132)' can't be established.
+ECDSA key fingerprint is SHA256:ov9Rj6u1jo6D27xYTqImyFJ+RS+JnY9YvBQBtNm48e8.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'ec2-18-191-168-132.us-east-2.compute.amazonaws.com,18.191.168.132' (ECDSA) to the list of known hosts.
+Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.4.0-1061-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@ip-172-31-0-189:~$ clear
+ubuntu@ip-172-31-0-189:~$ sudo apt-get update
+Hit:1 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial InRelease
+Get:2 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates InRelease [109 kB]
+Get:3 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-backports InRelease [107 kB]
+Get:4 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/main Sources [868 kB]
+Get:5 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/restricted Sources [4,808 B]
+Get:6 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/universe Sources [7,728 kB]
+Get:7 http://security.ubuntu.com/ubuntu xenial-security InRelease [107 kB]
+Get:8 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/multiverse Sources [179 kB]
+Get:9 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 Packages [7,532 kB]
+Get:10 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/universe Translation-en [4,354 kB]
+Get:11 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/multiverse amd64 Packages [144 kB]
+Get:12 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/multiverse Translation-en [106 kB]
+Get:13 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/main Sources [318 kB]
+Get:14 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/restricted Sources [2,528 B]
+Get:15 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/universe Sources [218 kB]
+Get:16 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/multiverse Sources [8,408 B]
+Get:17 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 Packages [831 kB]
+Get:18 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/main Translation-en [341 kB]
+Get:19 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/restricted amd64 Packages [7,556 B]
+Get:20 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 Packages [680 kB]
+Get:21 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/universe Translation-en [274 kB]
+Get:22 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/multiverse amd64 Packages [16.4 kB]
+Get:23 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/multiverse Translation-en [8,344 B]
+Get:24 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-backports/main Sources [4,488 B]
+Get:25 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-backports/universe Sources [6,736 B]
+Get:26 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-backports/main amd64 Packages [6,756 B]
+Get:27 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-backports/main Translation-en [4,180 B]
+Get:28 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-backports/universe amd64 Packages [7,420 B]
+Get:29 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-backports/universe Translation-en [3,996 B]
+Get:30 http://security.ubuntu.com/ubuntu xenial-security/main Sources [131 kB]
+Get:31 http://security.ubuntu.com/ubuntu xenial-security/restricted Sources [2,116 B]
+Get:32 http://security.ubuntu.com/ubuntu xenial-security/universe Sources [71.3 kB]
+Get:33 http://security.ubuntu.com/ubuntu xenial-security/multiverse Sources [2,088 B]
+Get:34 http://security.ubuntu.com/ubuntu xenial-security/main amd64 Packages [539 kB]
+Get:35 http://security.ubuntu.com/ubuntu xenial-security/main Translation-en [229 kB]
+Get:36 http://security.ubuntu.com/ubuntu xenial-security/universe amd64 Packages [367 kB]
+Get:37 http://security.ubuntu.com/ubuntu xenial-security/universe Translation-en [138 kB]
+Get:38 http://security.ubuntu.com/ubuntu xenial-security/multiverse amd64 Packages [3,456 B]
+Get:39 http://security.ubuntu.com/ubuntu xenial-security/multiverse Translation-en [1,744 B]
+Fetched 25.5 MB in 4s (5,438 kB/s)
+Reading package lists... Done
+ubuntu@ip-172-31-0-189:~$ sudo apt-get install -y apt-transport-https
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following packages will be upgraded:
+  apt-transport-https
+1 upgraded, 0 newly installed, 0 to remove and 50 not upgraded.
+Need to get 26.1 kB of archives.
+After this operation, 0 B of additional disk space will be used.
+Get:1 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 apt-transport-https amd64 1.2.27 [26.1 kB]
+Fetched 26.1 kB in 0s (0 B/s)
+(Reading database ... 51263 files and directories currently installed.)
+Preparing to unpack .../apt-transport-https_1.2.27_amd64.deb ...
+Unpacking apt-transport-https (1.2.27) over (1.2.26) ...
+Setting up apt-transport-https (1.2.27) ...
+ubuntu@ip-172-31-0-189:~$ sudo su -
+root@ip-172-31-0-189:~# curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add
+OK
+root@ip-172-31-0-189:~# vi /etc/apt/sources.list.d/kubernetes.list
+root@ip-172-31-0-189:~# cat /etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+root@ip-172-31-0-189:~# apt-get update
+Hit:1 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial InRelease
+Hit:2 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates InRelease
+Hit:3 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu xenial-security InRelease
+Get:5 https://packages.cloud.google.com/apt kubernetes-xenial InRelease [8,993 B]
+Get:6 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 Packages [18.8 kB]
+Fetched 27.8 kB in 0s (33.1 kB/s)
+Reading package lists... Done
+root@ip-172-31-0-189:~# apt-get install -y docker.io
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  bridge-utils cgroupfs-mount ubuntu-fan
+Suggested packages:
+  mountall aufs-tools debootstrap docker-doc rinse zfs-fuse | zfsutils
+The following NEW packages will be installed:
+  bridge-utils cgroupfs-mount docker.io ubuntu-fan
+0 upgraded, 4 newly installed, 0 to remove and 50 not upgraded.
+Need to get 17.1 MB of archives.
+After this operation, 90.5 MB of additional disk space will be used.
+Get:1 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 bridge-utils amd64 1.5-9ubuntu1 [28.6 kB]
+Get:2 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 cgroupfs-mount all 1.2 [4,970 B]
+Get:3 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 docker.io amd64 17.03.2-0ubuntu2~16.04.1 [17.1 MB]
+Get:4 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 ubuntu-fan all 0.12.8~16.04.2 [35.6 kB]
+Fetched 17.1 MB in 0s (36.6 MB/s)
+Preconfiguring packages ...
+Selecting previously unselected package bridge-utils.
+(Reading database ... 51263 files and directories currently installed.)
+Preparing to unpack .../bridge-utils_1.5-9ubuntu1_amd64.deb ...
+Unpacking bridge-utils (1.5-9ubuntu1) ...
+Selecting previously unselected package cgroupfs-mount.
+Preparing to unpack .../cgroupfs-mount_1.2_all.deb ...
+Unpacking cgroupfs-mount (1.2) ...
+Selecting previously unselected package docker.io.
+Preparing to unpack .../docker.io_17.03.2-0ubuntu2~16.04.1_amd64.deb ...
+Unpacking docker.io (17.03.2-0ubuntu2~16.04.1) ...
+Selecting previously unselected package ubuntu-fan.
+Preparing to unpack .../ubuntu-fan_0.12.8~16.04.2_all.deb ...
+Unpacking ubuntu-fan (0.12.8~16.04.2) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Setting up bridge-utils (1.5-9ubuntu1) ...
+Setting up cgroupfs-mount (1.2) ...
+Setting up docker.io (17.03.2-0ubuntu2~16.04.1) ...
+Adding group `docker' (GID 116) ...
+Done.
+Setting up ubuntu-fan (0.12.8~16.04.2) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+root@ip-172-31-0-189:~# docker version
+Client:
+ Version:      17.03.2-ce
+ API version:  1.27
+ Go version:   go1.6.2
+ Git commit:   f5ec1e2
+ Built:        Thu Jul  5 23:07:48 2018
+ OS/Arch:      linux/amd64
+
+Server:
+ Version:      17.03.2-ce
+ API version:  1.27 (minimum version 1.12)
+ Go version:   go1.6.2
+ Git commit:   f5ec1e2
+ Built:        Thu Jul  5 23:07:48 2018
+ OS/Arch:      linux/amd64
+ Experimental: false
+root@ip-172-31-0-189:~# apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  cri-tools ebtables socat
+The following NEW packages will be installed:
+  cri-tools ebtables kubeadm kubectl kubelet kubernetes-cni socat
+0 upgraded, 7 newly installed, 0 to remove and 50 not upgraded.
+Need to get 53.7 MB of archives.
+After this operation, 351 MB of additional disk space will be used.
+Get:1 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 ebtables amd64 2.0.10.4-3.4ubuntu2.16.04.2 [79.9 kB]
+Get:2 http://us-east-2.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 socat amd64 1.7.3.1-1 [321 kB]
+Get:3 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 cri-tools amd64 1.11.0-00 [5,309 kB]
+Get:4 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubernetes-cni amd64 0.6.0-00 [5,910 kB]
+Get:5 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubelet amd64 1.11.2-00 [23.2 MB]
+Get:6 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubectl amd64 1.11.2-00 [9,394 kB]
+Get:7 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubeadm amd64 1.11.2-00 [9,420 kB]
+Fetched 53.7 MB in 3s (16.3 MB/s)
+Selecting previously unselected package cri-tools.
+(Reading database ... 51422 files and directories currently installed.)
+Preparing to unpack .../cri-tools_1.11.0-00_amd64.deb ...
+Unpacking cri-tools (1.11.0-00) ...
+Selecting previously unselected package ebtables.
+Preparing to unpack .../ebtables_2.0.10.4-3.4ubuntu2.16.04.2_amd64.deb ...
+Unpacking ebtables (2.0.10.4-3.4ubuntu2.16.04.2) ...
+Selecting previously unselected package kubernetes-cni.
+Preparing to unpack .../kubernetes-cni_0.6.0-00_amd64.deb ...
+Unpacking kubernetes-cni (0.6.0-00) ...
+Selecting previously unselected package socat.
+Preparing to unpack .../socat_1.7.3.1-1_amd64.deb ...
+Unpacking socat (1.7.3.1-1) ...
+Selecting previously unselected package kubelet.
+Preparing to unpack .../kubelet_1.11.2-00_amd64.deb ...
+Unpacking kubelet (1.11.2-00) ...
+Selecting previously unselected package kubectl.
+Preparing to unpack .../kubectl_1.11.2-00_amd64.deb ...
+Unpacking kubectl (1.11.2-00) ...
+Selecting previously unselected package kubeadm.
+Preparing to unpack .../kubeadm_1.11.2-00_amd64.deb ...
+Unpacking kubeadm (1.11.2-00) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Setting up cri-tools (1.11.0-00) ...
+Setting up ebtables (2.0.10.4-3.4ubuntu2.16.04.2) ...
+update-rc.d: warning: start and stop actions are no longer supported; falling back to defaults
+Setting up kubernetes-cni (0.6.0-00) ...
+Setting up socat (1.7.3.1-1) ...
+Setting up kubelet (1.11.2-00) ...
+Setting up kubectl (1.11.2-00) ...
+Setting up kubeadm (1.11.2-00) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+root@ip-172-31-0-189:~# kubeadm init
+[init] using Kubernetes version: v1.11.2
+[preflight] running pre-flight checks
+I0817 09:37:49.052435    4815 kernel_validator.go:81] Validating kernel version
+I0817 09:37:49.052522    4815 kernel_validator.go:96] Validating kernel config
+[preflight/images] Pulling images required for setting up a Kubernetes cluster
+[preflight/images] This might take a minute or two, depending on the speed of your internet connection
+[preflight/images] You can also perform this action in beforehand using 'kubeadm config images pull'
+[kubelet] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[preflight] Activating the kubelet service
+[certificates] Generated ca certificate and key.
+[certificates] Generated apiserver certificate and key.
+[certificates] apiserver serving cert is signed for DNS names [ip-172-31-0-189 kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 172.31.0.189]
+[certificates] Generated apiserver-kubelet-client certificate and key.
+[certificates] Generated sa key and public key.
+[certificates] Generated front-proxy-ca certificate and key.
+[certificates] Generated front-proxy-client certificate and key.
+[certificates] Generated etcd/ca certificate and key.
+[certificates] Generated etcd/server certificate and key.
+[certificates] etcd/server serving cert is signed for DNS names [ip-172-31-0-189 localhost] and IPs [127.0.0.1 ::1]
+[certificates] Generated etcd/peer certificate and key.
+[certificates] etcd/peer serving cert is signed for DNS names [ip-172-31-0-189 localhost] and IPs [172.31.0.189 127.0.0.1 ::1]
+[certificates] Generated etcd/healthcheck-client certificate and key.
+[certificates] Generated apiserver-etcd-client certificate and key.
+[certificates] valid certificates and keys now exist in "/etc/kubernetes/pki"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/admin.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/kubelet.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/controller-manager.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/scheduler.conf"
+[controlplane] wrote Static Pod manifest for component kube-apiserver to "/etc/kubernetes/manifests/kube-apiserver.yaml"
+[controlplane] wrote Static Pod manifest for component kube-controller-manager to "/etc/kubernetes/manifests/kube-controller-manager.yaml"
+[controlplane] wrote Static Pod manifest for component kube-scheduler to "/etc/kubernetes/manifests/kube-scheduler.yaml"
+[etcd] Wrote Static Pod manifest for a local etcd instance to "/etc/kubernetes/manifests/etcd.yaml"
+[init] waiting for the kubelet to boot up the control plane as Static Pods from directory "/etc/kubernetes/manifests"
+[init] this might take a minute or longer if the control plane images have to be pulled
+[apiclient] All control plane components are healthy after 37.501472 seconds
+[uploadconfig] storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[kubelet] Creating a ConfigMap "kubelet-config-1.11" in namespace kube-system with the configuration for the kubelets in the cluster
+[markmaster] Marking the node ip-172-31-0-189 as master by adding the label "node-role.kubernetes.io/master=''"
+[markmaster] Marking the node ip-172-31-0-189 as master by adding the taints [node-role.kubernetes.io/master:NoSchedule]
+[patchnode] Uploading the CRI Socket information "/var/run/dockershim.sock" to the Node API object "ip-172-31-0-189" as an annotation
+[bootstraptoken] using token: i4o81b.gup2qijmafe2axxv
+[bootstraptoken] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstraptoken] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstraptoken] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstraptoken] creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes master has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of machines by running the following on each node
+as root:
+
+  kubeadm join 172.31.0.189:6443 --token i4o81b.gup2qijmafe2axxv --discovery-token-ca-cert-hash sha256:d5bd2a544f39d0a4d7bfb41ffcd26a6e3765deecfe0a7a72a4d7c92b2cd5e08e
+
+root@ip-172-31-0-189:~# kubectl get node
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+root@ip-172-31-0-189:~# mkdir -p $HOME/.kube
+root@ip-172-31-0-189:~# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+root@ip-172-31-0-189:~# sudo chown $(id -u):$(id -g) $HOME/.kube/config
+root@ip-172-31-0-189:~# kubectl get node
+NAME              STATUS     ROLES     AGE       VERSION
+ip-172-31-0-189   NotReady   master    1m        v1.11.2
+root@ip-172-31-0-189:~# kubectl get pods --all-namespaces
+NAMESPACE     NAME                                      READY     STATUS    RESTARTS   AGE
+kube-system   coredns-78fcdf6894-4lj7f                  0/1       Pending   0          1m
+kube-system   coredns-78fcdf6894-nlvft                  0/1       Pending   0          1m
+kube-system   etcd-ip-172-31-0-189                      1/1       Running   0          5s
+kube-system   kube-apiserver-ip-172-31-0-189            1/1       Running   0          14s
+kube-system   kube-controller-manager-ip-172-31-0-189   1/1       Running   0          11s
+kube-system   kube-proxy-g5847                          1/1       Running   0          1m
+kube-system   kube-scheduler-ip-172-31-0-189            1/1       Running   0          25s
+root@ip-172-31-0-189:~# sysctl net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-iptables = 1
+root@ip-172-31-0-189:~# export kubever=$(kubectl version | base64 | tr -d '\n')
+root@ip-172-31-0-189:~# kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+serviceaccount/weave-net created
+clusterrole.rbac.authorization.k8s.io/weave-net created
+clusterrolebinding.rbac.authorization.k8s.io/weave-net created
+role.rbac.authorization.k8s.io/weave-net created
+rolebinding.rbac.authorization.k8s.io/weave-net created
+daemonset.extensions/weave-net created
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME              STATUS     ROLES     AGE       VERSION
+ip-172-31-0-189   NotReady   master    2m        v1.11.2
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME              STATUS    ROLES     AGE       VERSION
+ip-172-31-0-189   Ready     master    2m        v1.11.2
+root@ip-172-31-0-189:~# kubectl get pods --all-namespaces
+NAMESPACE     NAME                                      READY     STATUS    RESTARTS   AGE
+kube-system   coredns-78fcdf6894-4lj7f                  1/1       Running   0          3m
+kube-system   coredns-78fcdf6894-nlvft                  1/1       Running   0          3m
+kube-system   etcd-ip-172-31-0-189                      1/1       Running   0          1m
+kube-system   kube-apiserver-ip-172-31-0-189            1/1       Running   0          2m
+kube-system   kube-controller-manager-ip-172-31-0-189   1/1       Running   0          2m
+kube-system   kube-proxy-g5847                          1/1       Running   0          3m
+kube-system   kube-scheduler-ip-172-31-0-189            1/1       Running   0          2m
+kube-system   weave-net-cq9cq                           2/2       Running   0          38s
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME              STATUS     ROLES     AGE       VERSION
+ip-172-31-0-189   Ready      master    12m       v1.11.2
+ip-172-31-47-87   NotReady   <none>    25s       v1.11.2
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME              STATUS     ROLES     AGE       VERSION
+ip-172-31-0-189   Ready      master    12m       v1.11.2
+ip-172-31-47-87   NotReady   <none>    36s       v1.11.2
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME              STATUS     ROLES     AGE       VERSION
+ip-172-31-0-189   Ready      master    12m       v1.11.2
+ip-172-31-47-87   NotReady   <none>    38s       v1.11.2
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME              STATUS    ROLES     AGE       VERSION
+ip-172-31-0-189   Ready     master    13m       v1.11.2
+ip-172-31-47-87   Ready     <none>    1m        v1.11.2
+root@ip-172-31-0-189:~# kubectl get pods --all-namespaces
+NAMESPACE     NAME                                      READY     STATUS    RESTARTS   AGE
+kube-system   coredns-78fcdf6894-4lj7f                  1/1       Running   0          13m
+kube-system   coredns-78fcdf6894-nlvft                  1/1       Running   0          13m
+kube-system   etcd-ip-172-31-0-189                      1/1       Running   0          12m
+kube-system   kube-apiserver-ip-172-31-0-189            1/1       Running   0          12m
+kube-system   kube-controller-manager-ip-172-31-0-189   1/1       Running   0          12m
+kube-system   kube-proxy-f4vfb                          1/1       Running   0          1m
+kube-system   kube-proxy-g5847                          1/1       Running   0          13m
+kube-system   kube-scheduler-ip-172-31-0-189            1/1       Running   0          12m
+kube-system   weave-net-cq9cq                           2/2       Running   0          11m
+kube-system   weave-net-txtn6                           2/2       Running   1          1m
+root@ip-172-31-0-189:~# kubectl get pods --all-namespaces
+NAMESPACE     NAME                                      READY     STATUS    RESTARTS   AGE
+kube-system   coredns-78fcdf6894-4lj7f                  1/1       Running   0          13m
+kube-system   coredns-78fcdf6894-nlvft                  1/1       Running   0          13m
+kube-system   etcd-ip-172-31-0-189                      1/1       Running   0          12m
+kube-system   kube-apiserver-ip-172-31-0-189            1/1       Running   0          12m
+kube-system   kube-controller-manager-ip-172-31-0-189   1/1       Running   0          12m
+kube-system   kube-proxy-f4vfb                          1/1       Running   0          1m
+kube-system   kube-proxy-g5847                          1/1       Running   0          13m
+kube-system   kube-scheduler-ip-172-31-0-189            1/1       Running   0          13m
+kube-system   weave-net-cq9cq                           2/2       Running   0          11m
+kube-system   weave-net-txtn6                           2/2       Running   1          1m
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME               STATUS     ROLES     AGE       VERSION
+ip-172-31-0-189    Ready      master    17m       v1.11.2
+ip-172-31-32-137   NotReady   <none>    8s        v1.11.2
+ip-172-31-47-87    Ready      <none>    5m        v1.11.2
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME               STATUS     ROLES     AGE       VERSION
+ip-172-31-0-189    Ready      master    17m       v1.11.2
+ip-172-31-32-137   NotReady   <none>    13s       v1.11.2
+ip-172-31-47-87    Ready      <none>    5m        v1.11.2
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME               STATUS     ROLES     AGE       VERSION
+ip-172-31-0-189    Ready      master    17m       v1.11.2
+ip-172-31-32-137   NotReady   <none>    15s       v1.11.2
+ip-172-31-47-87    Ready      <none>    5m        v1.11.2
+root@ip-172-31-0-189:~# kubectl get nodes
+NAME               STATUS    ROLES     AGE       VERSION
+ip-172-31-0-189    Ready     master    18m       v1.11.2
+ip-172-31-32-137   Ready     <none>    42s       v1.11.2
+ip-172-31-47-87    Ready     <none>    5m        v1.11.2
+root@ip-172-31-0-189:~# kubectl get pods --all-namespaces
+NAMESPACE     NAME                                      READY     STATUS    RESTARTS   AGE
+kube-system   coredns-78fcdf6894-4lj7f                  1/1       Running   0          17m
+kube-system   coredns-78fcdf6894-nlvft                  1/1       Running   0          17m
+kube-system   etcd-ip-172-31-0-189                      1/1       Running   0          16m
+kube-system   kube-apiserver-ip-172-31-0-189            1/1       Running   0          17m
+kube-system   kube-controller-manager-ip-172-31-0-189   1/1       Running   0          16m
+kube-system   kube-proxy-5gjlx                          1/1       Running   0          46s
+kube-system   kube-proxy-f4vfb                          1/1       Running   0          5m
+kube-system   kube-proxy-g5847                          1/1       Running   0          17m
+kube-system   kube-scheduler-ip-172-31-0-189            1/1       Running   0          17m
+kube-system   weave-net-7sddf                           2/2       Running   0          46s
+kube-system   weave-net-cq9cq                           2/2       Running   0          15m
+kube-system   weave-net-txtn6                           2/2       Running   1          5m
+root@ip-172-31-0-189:~# kubectl run testing --image=nginx --replicas=3 deployment "testing" created
+deployment.apps/testing created
+root@ip-172-31-0-189:~# kubectl get pods
+NAME                       READY     STATUS              RESTARTS   AGE
+testing-6b6b5769fb-57d5w   0/1       RunContainerError   0          13s
+testing-6b6b5769fb-lswtf   0/1       RunContainerError   1          13s
+testing-6b6b5769fb-tpgzc   0/1       RunContainerError   0          13s
+root@ip-172-31-0-189:~# kubectl get pods
+NAME                       READY     STATUS              RESTARTS   AGE
+testing-6b6b5769fb-57d5w   0/1       RunContainerError   1          23s
+testing-6b6b5769fb-lswtf   0/1       RunContainerError   1          23s
+testing-6b6b5769fb-tpgzc   0/1       RunContainerError   1          23s
+root@ip-172-31-0-189:~# kubectl get pods
+NAME                       READY     STATUS              RESTARTS   AGE
+testing-6b6b5769fb-57d5w   0/1       RunContainerError   1          26s
+testing-6b6b5769fb-lswtf   0/1       RunContainerError   1          26s
+testing-6b6b5769fb-tpgzc   0/1       RunContainerError   1          26s
+root@ip-172-31-0-189:~# kubectl get pods
+NAME                       READY     STATUS              RESTARTS   AGE
+testing-6b6b5769fb-57d5w   0/1       CrashLoopBackOff    2          49s
+testing-6b6b5769fb-lswtf   0/1       RunContainerError   2          49s
+testing-6b6b5769fb-tpgzc   0/1       RunContainerError   2          49s
+root@ip-172-31-0-189:~# kubectl get pods
+NAME                       READY     STATUS              RESTARTS   AGE
+testing-6b6b5769fb-57d5w   0/1       CrashLoopBackOff    2          54s
+testing-6b6b5769fb-lswtf   0/1       RunContainerError   2          54s
+testing-6b6b5769fb-tpgzc   0/1       CrashLoopBackOff    2          54s
+root@ip-172-31-0-189:~# kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+secret/kubernetes-dashboard-certs created
+serviceaccount/kubernetes-dashboard created
+role.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created
+deployment.apps/kubernetes-dashboard created
+service/kubernetes-dashboard created
+root@ip-172-31-0-189:~# vi service.yaml
+root@ip-172-31-0-189:~# cat service.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+name: admin-user
+namespace: kube-system
+root@ip-172-31-0-189:~# kubectl apply -f service.yaml
+error: error validating "service.yaml": error validating data: [ValidationError(ServiceAccount): unknown field "name" in io.k8s.api.core.v1.ServiceAccount, ValidationError(ServiceAccount): unknown field "namespace" in io.k8s.api.core.v1.ServiceAccount]; if you choose to ignore these errors, turn validation off with --validate=false
+root@ip-172-31-0-189:~# kubectl apply -f service.yaml
+error: error validating "service.yaml": error validating data: [ValidationError(ServiceAccount): unknown field "name" in io.k8s.api.core.v1.ServiceAccount, ValidationError(ServiceAccount): unknown field "namespace" in io.k8s.api.core.v1.ServiceAccount]; if you choose to ignore these errors, turn validation off with --validate=false
+root@ip-172-31-0-189:~# kubectl apply -f service.yaml --validate=false
+error: error when retrieving current configuration of:
+Resource: "/v1, Resource=serviceaccounts", GroupVersionKind: "/v1, Kind=ServiceAccount"
+Name: "", Namespace: "default"
+Object: &{map["name":"admin-user" "namespace":"kube-system" "apiVersion":"v1" "kind":"ServiceAccount" "metadata":<nil>]}
+from server for: "service.yaml": resource name may not be empty
+root@ip-172-31-0-189:~# vi rolebinding.yaml
+root@ip-172-31-0-189:~# kubectl apply -f rolebinding.yaml
+error: error parsing rolebinding.yaml: error converting YAML to JSON: yaml: line 10: did not find expected key
+root@ip-172-31-0-189:~# vi rolebinding.yaml
+root@ip-172-31-0-189:~# kubectl apply -f rolebinding.yaml
+error: error validating "rolebinding.yaml": error validating data: ValidationError(ClusterRoleBinding.subjects): invalid type for io.k8s.api.rbac.v1beta1.ClusterRoleBinding.subjects: got "map", expected "array"; if you choose to ignore these errors, turn validation off with --validate=false
+root@ip-172-31-0-189:~# kubectl apply -f rolebinding.yaml --validate=false
+Error from server (BadRequest): error when creating "rolebinding.yaml": ClusterRoleBinding in version "v1beta1" cannot be handled as a ClusterRoleBinding: v1beta1.ClusterRoleBinding.Subjects: []v1beta1.Subject: decode slice: expect [ or n, but found {, error found in #10 byte of ...|ubjects":{"-kind":"S|..., bigger context ...|"ClusterRole","name":"cluster-admin"},"subjects":{"-kind":"ServiceAccount","name":"admin-user","name|...
+root@ip-172-31-0-189:~# kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+Name:         attachdetach-controller-token-gjw4g
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=attachdetach-controller
+              kubernetes.io/service-account.uid=5fb8439c-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhdHRhY2hkZXRhY2gtY29udHJvbGxlci10b2tlbi1nanc0ZyIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJhdHRhY2hkZXRhY2gtY29udHJvbGxlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjVmYjg0MzljLWEyMDEtMTFlOC1iOTNlLTAyYjMxMzRkOGI2OCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTphdHRhY2hkZXRhY2gtY29udHJvbGxlciJ9.u_gsnKppimtSjcSzFiF1fQZFDznYJjs7MqY2URiqx4-DeiCkz3EgTh9hMDf9w1JYZor6elWixtAEGUji4ZH_LL-hs02BTFrwQR1ZvMVuc8Bs1qPO8hgI9QKlLiCVprTBMJYzz2eTbccItiwoG_6ko-v5FcfPOXWUakp-8qCCykW7RjRQdQKyETxEriydAq3sz03EoZuRjyanMughR868Ktuyg3ijl9IcmRG6YQY3Y_pj831RV3cHothcIhDkqtwCIzoEH0mZI9_wRYhJB2O9HU8x85GFwzHqp3f7uTRENRq851z9rUuIh434mnY7Er6zH9ruTs4gPEoZUZFsVsljIA
+ca.crt:     1025 bytes
+
+
+Name:         bootstrap-signer-token-bthth
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=bootstrap-signer
+              kubernetes.io/service-account.uid=5d9ebee8-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJib290c3RyYXAtc2lnbmVyLXRva2VuLWJ0aHRoIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImJvb3RzdHJhcC1zaWduZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1ZDllYmVlOC1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06Ym9vdHN0cmFwLXNpZ25lciJ9.JeGmp2GeC6Z8JYrCfS3zZXkpgP_VmPM7ZiRWcdGzXfY2R3GvCGPHOSfI2XQHzlGfTCROq9MFI_aMA0oU1WCjJTwliYP3_LUuviqve7ckgdGlTPorlYw8n2FgCSUacw2ev_RAs96JWoeegWekEKBpgxalUfPpMeaZiE2iart3XKH3GO7yLal8UqlQRzz3SS8CH88OMbaaKg9g9a1W6k60uPHp0Ju55BQmlHwoFalW-dpY_O5YH0PEHMLw7-WlA_FVRXCT3dOatiYEBc2sAV2sAm1dvaJWk3sii4sc35FQboyEiCBahdzH8Ym6KO1em26q1SHU1EW7cNHYvxXiS2u_5w
+
+
+Name:         bootstrap-token-i4o81b
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  <none>
+
+Type:  bootstrap.kubernetes.io/token
+
+Data
+====
+token-secret:                    16 bytes
+usage-bootstrap-authentication:  4 bytes
+usage-bootstrap-signing:         4 bytes
+auth-extra-groups:               47 bytes
+description:                     56 bytes
+expiration:                      20 bytes
+token-id:                        6 bytes
+
+
+Name:         certificate-controller-token-qz575
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=certificate-controller
+              kubernetes.io/service-account.uid=5d9bef04-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJjZXJ0aWZpY2F0ZS1jb250cm9sbGVyLXRva2VuLXF6NTc1Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImNlcnRpZmljYXRlLWNvbnRyb2xsZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1ZDliZWYwNC1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06Y2VydGlmaWNhdGUtY29udHJvbGxlciJ9.TQYPLn2otfIFMceNjuBXQbyYOwKtWl2UDgofs43ays2hrrMDzXi1ASxwAhzaOmQrN8I2VuoP7bKcrdW_pz7erNNMqaQ9u3ze1XGRnTefCYiebhVLtHtZpVk0uHaRcH_jFT-gzjSRW4NpZ_y5wnboUjinQ1h3VK8p1Mv8GVGePb6utbE9b98G-vImMtGWq4TWhAvMMYL61Mib0w-Xz2_0OLWOTnOxXTyp34K0X_07iitr0hFEESY-aFSlUYMrbGxXReea8BaozEu-NJYXVOWNqd-rrx8F3l9NJNNPmEYL4Vv3AiuiwwcmxwaPf8X6nhAfSs9rgSVlYlcx2ySoioGI6w
+
+
+Name:         clusterrole-aggregation-controller-token-qvdbb
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=clusterrole-aggregation-controller
+              kubernetes.io/service-account.uid=5d87bd50-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJjbHVzdGVycm9sZS1hZ2dyZWdhdGlvbi1jb250cm9sbGVyLXRva2VuLXF2ZGJiIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImNsdXN0ZXJyb2xlLWFnZ3JlZ2F0aW9uLWNvbnRyb2xsZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1ZDg3YmQ1MC1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06Y2x1c3RlcnJvbGUtYWdncmVnYXRpb24tY29udHJvbGxlciJ9.cRA4IwMjAzkrr6sjs9BOnBuvFDRB9R81wqGSyP_AOC4wyBVLKv7TItqZFsJxBuaTXV0IsWhk82rv6hoqILAFpXbZqnBDMjxeSvg-x5deZlxGSebq6goRMCBG7UWbPiW9na799t1OgVhSa3cvPddW0ncAGfxkzDidqajQyM18dF6jxN4vrVR76inoaPbdI8DJivx9nnE7wrDkWBY9Zdm8Lh1tkm4TaEdh4oqFAMXSsfpws7P-7amD85wEUCijVbKbHtclCd3QsM2aGwsil_OzgNj0q2AhDVtGnQ7yykqpRfe087M7uigjPTGWU0OPyZEor2pP4nmbC2G52CwYY5vn-w
+
+
+Name:         coredns-token-tc7pm
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=coredns
+              kubernetes.io/service-account.uid=5deb91f7-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJjb3JlZG5zLXRva2VuLXRjN3BtIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImNvcmVkbnMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1ZGViOTFmNy1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06Y29yZWRucyJ9.TbxTo7gJpWBsJyTvExiUf0dzJ-NKF7gR4mToIwkvq-7EiweglJu4p1dk8_rCH0bBs0636iUkjIwELCesgI_876XjWODTGhhuZS21Gcopkymc91JIKnBLgdJWmPFElG5kdHGqwrejnWNAvAlUFSqocLjS94GinlmumfvmZ4O17nMETW1ku3RIKhS19dL5wJfi6tLcY9MUeRQTWzr0hf4SZ5j28bjeH5g0GvskOnAwQod6SesExfyapnpaG5q4M0RA4fLRc5GmrIjckQbHIaJcsg89mSaVgfQNAhdb_x64A2FY8Em-ZjobTmQN1-ZhqY6V1Vyo_vxDhkDBZjre-UgADQ
+ca.crt:     1025 bytes
+
+
+Name:         cronjob-controller-token-jsksm
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=cronjob-controller
+              kubernetes.io/service-account.uid=5f921d36-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJjcm9uam9iLWNvbnRyb2xsZXItdG9rZW4tanNrc20iLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiY3JvbmpvYi1jb250cm9sbGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNWY5MjFkMzYtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmNyb25qb2ItY29udHJvbGxlciJ9.ce_W1oxa8rWnDvOMjJZikt9URZIbQMA-5mSvvmn59DmhPUJpJBYzmwccg8qamA8_HIfMfnKetvFs7VLqGg96AdrmhTtiRN5vgnJAGNDDzWuYELewi3fCNJDtIBMC46DjH0ybqvXCNHvqbnVh0UxEBimCF9_Gedsy_6wNg0TyNlcNF8NfSkwh81IOiLE5W72uksPOLdN7eRa_BIj25CWlRefl1ONnaNogZUERRw1qiN6IW8eM3VD3CmdxIBB-Gb2ej99rNJUtcXe6z4AGFl08YKRn6J8LbVRmjVAgtFtLMKG4W_t0C1NtdpdAePVcxXc5k1VIGKy1gP8H1ikly2fhSQ
+
+
+Name:         daemon-set-controller-token-kt6bj
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=daemon-set-controller
+              kubernetes.io/service-account.uid=5ddf3cfd-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkYWVtb24tc2V0LWNvbnRyb2xsZXItdG9rZW4ta3Q2YmoiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGFlbW9uLXNldC1jb250cm9sbGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNWRkZjNjZmQtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmRhZW1vbi1zZXQtY29udHJvbGxlciJ9.1Pfburticde83IzZ2NDNtTnlhZlQH4KSGMtqa8npKVOZ1hbxeUi9u2W_qaqxWa6UuFeyUIGRjQc0pOE7d1Ak4-Jpe-Wpj7TOcwtitIxonB-FK4IkqvH8VUJ2NKy-hUbCMCnNgRyTUxXSYmg7coUcEBqJLsruq7k1wtAH0OZgXvZ8_NX9YXgNw3zR-BPZG1IA3fHOoSjxdPmZTmU9a5RD9r0yAcQx4c7Mif0WvEewSKrz_lKxNG_almpGYUKy1hrJKnzXuIjPJJZ_bohx9eDB9Z1QjvCIUShYZgj1QVQmYiOGAUxhpi4VD3WYSYzBDpj1_6Tyt_5tHmzu8We4KNueCw
+
+
+Name:         default-token-7b6nm
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=default
+              kubernetes.io/service-account.uid=613fa33f-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZWZhdWx0LXRva2VuLTdiNm5tIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImRlZmF1bHQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI2MTNmYTMzZi1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06ZGVmYXVsdCJ9.BgdhGRSq5621YC1_c6_xM_1cFA4gi6zSP5Vv-4QI3N92SCJHSFAk0_vaqWqoyXxJsqBS8mcEJ61y9YsmKLEX7zXWK6AEeQhL5ZFDpoGKmcMnY_EMV2uwXhEjRbc7NMc7BNeAcu9CEprAVuVT_AiC5YNMnL52L_Y77-n70n7vgUc-u5GDVrdfv9KQjAiygP45VYSPRVLmfFkkDbNtFeMk9GvWzYVWS0gCeylaEKfs3deQL1izOGE4JQ1hJRVDnRO-UV4GUPglDzubBVJaJ9FLMaWLzLrVV8SC3eNYK3Sp0n1MbMq1tmSGZq0xqbBsrrwkpEl6Igzaeo7AVyPBWdlqZQ
+ca.crt:     1025 bytes
+
+
+Name:         deployment-controller-token-phbct
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=deployment-controller
+              kubernetes.io/service-account.uid=5f1fad95-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZXBsb3ltZW50LWNvbnRyb2xsZXItdG9rZW4tcGhiY3QiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVwbG95bWVudC1jb250cm9sbGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNWYxZmFkOTUtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmRlcGxveW1lbnQtY29udHJvbGxlciJ9.kVFOnTzsds3kqiIG25aoaE-6V9K9LKeIs67uJZSrN-U2zUj3VsW3l6IJxwla4jseA4cQRDbkikXSj6RRuNDFLfMqvMS6GCDD7tW-bg3HsH3Oqk5XTGB6ebxmMXID14qOnxOfhchNMAVDGIBcrQQ6P7x_4lkqyEG-wkEc0aseIXe4lLVKJY3LSk763vsaApdu7-ytGt8pvD5LTdMATWE7q-TNpcjzqYQ67RK7VWaecN0UyFi_d8jIfMCr4OxUdU91ibqqKaEK0s2WRYB5IpcE6LE6TUDE4aCHlcOXEFdVhyD0wk6Db3A707uaQvTA5DrLB28Ky222AsrapM-NJaKiIQ
+
+
+Name:         disruption-controller-token-6dvgb
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=disruption-controller
+              kubernetes.io/service-account.uid=5e966633-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkaXNydXB0aW9uLWNvbnRyb2xsZXItdG9rZW4tNmR2Z2IiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGlzcnVwdGlvbi1jb250cm9sbGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNWU5NjY2MzMtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmRpc3J1cHRpb24tY29udHJvbGxlciJ9.JdWyKbYuDWhTPCUwus9Uz8t8mI_GrZYMivme9Pc_6OSR5NK-SdfQEXNyCuargyZdF3b7L8_97J01IJAUK7X1jjdVNPEJwctd0YFb45aWgjvsIzyq3VilJayh08uiFeHVE1gCEob8xUcAcjKumhZaD7DdcjfsgIxtPBmEFJif59XtOd_IeUq7ilGkFa2XjNNYTkwrOI1zE82sWTRR3nykos_QhUvPxGe8DFQR2whTe-5ouhNRgRpldUxwD9sqNW3aY4fUAy5gtCkYmgtbEEEQ99NOWcBMgHQ5aNGeH_YHwpauhz_yA7OIN9w1v6byZFJ69RFg1gJepVZD5gX9xC4ZOA
+
+
+Name:         endpoint-controller-token-dnw55
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=endpoint-controller
+              kubernetes.io/service-account.uid=60da39d0-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJlbmRwb2ludC1jb250cm9sbGVyLXRva2VuLWRudzU1Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImVuZHBvaW50LWNvbnRyb2xsZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI2MGRhMzlkMC1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06ZW5kcG9pbnQtY29udHJvbGxlciJ9.Hftop12fQMy-WULTCEtPPaLK_ZxA8QxHC7b2W-eJGpWDcEy5gmXGyCJ6hamTuA9KiM5bB5UgoaS_Ol7nvR3b74RUL42qYYvQhl535HAjAqu69OCoCldtWqzp_3pB4ZHeXaiSm_Ti5TYlkHc3VRwDkc7eBet4qXFgfwpTcflrMG4F6m4EN0mZge5QX8J6dGyV7gRhz_gNG8FuL7k5w1P_dMRI-0198yLYBpWCUWtcLopONZ6Cy_EqWyWgXpZhbJujiu-eJxGU6lIq0dpBj13AhjqvRZsamdr809YjbXmtQghcAhS02bx534GvvO84h-EcWyAOMYh8oGuwgM1DWgU2KQ
+ca.crt:     1025 bytes
+
+
+Name:         expand-controller-token-zq24m
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=expand-controller
+              kubernetes.io/service-account.uid=5fde7512-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJleHBhbmQtY29udHJvbGxlci10b2tlbi16cTI0bSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJleHBhbmQtY29udHJvbGxlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjVmZGU3NTEyLWEyMDEtMTFlOC1iOTNlLTAyYjMxMzRkOGI2OCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTpleHBhbmQtY29udHJvbGxlciJ9.Qwt92rnFEEXyCRQvW08PiNMSK8zvDAbkaAHOSPgin8dRFGFdUc0YOynD-NtM3FNNf6IAN2GlamfbVTlmxcf6Bbuu8u5yOCXLUPu0XTgolDVeKyDhZIQCers9N7FkaWGtqW1CwSu7yRLBihWvB9_aIBvCWg_DCKHm_-zBCEp2paH4EJq0w2ArBK0qVhEObcrVmMK50lm0cBp-rdVfkASn5IHFt0t490Sk1cs2P8_eMHhAgST4VqrKa28Nvz5TjF1LdhMaTngRg2LNAeBjV4dA77fsQa0QUaqufPW_mHfhQz66D3fWQMfWBw5hI_JPXVNLBxsQi9ompDLgsSnV35Jn7w
+
+
+Name:         generic-garbage-collector-token-wqcq2
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=generic-garbage-collector
+              kubernetes.io/service-account.uid=5da798ec-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJnZW5lcmljLWdhcmJhZ2UtY29sbGVjdG9yLXRva2VuLXdxY3EyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImdlbmVyaWMtZ2FyYmFnZS1jb2xsZWN0b3IiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1ZGE3OThlYy1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06Z2VuZXJpYy1nYXJiYWdlLWNvbGxlY3RvciJ9.qXHWLPAQKpG4NnRZGwk1kmhN00H1ZbyB9GIKqAKmAYuV44UchJrEbj-MCdWB5-8u9HSiekZt-5IvbPCtyGcMlTzZbaOzTvS2ULJfLgNqc3RRNwP_JsjPoMpR6PK5ng3_pIndHoemJ2pH1f038OzEuwf5Le1OLjRiXYILClSP1IZURQlcXnmF_qS1SlmnKCLQE_MbIIi6riBgsyiiS3tAjmjgej_92TOV_GOf53cbV_BX72ABTSfFs_MUgxOTWPOOMgCOWKBk5Xiguhixgfv4BTZyPUjoCXMpP4uHLRVg822PdmxtF3A0JXBfHsJzhECJ1Yz0j2ucwvq0kdpLPctoOg
+ca.crt:     1025 bytes
+
+
+Name:         horizontal-pod-autoscaler-token-pdvn8
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=horizontal-pod-autoscaler
+              kubernetes.io/service-account.uid=5e2b8789-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJob3Jpem9udGFsLXBvZC1hdXRvc2NhbGVyLXRva2VuLXBkdm44Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6Imhvcml6b250YWwtcG9kLWF1dG9zY2FsZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1ZTJiODc4OS1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06aG9yaXpvbnRhbC1wb2QtYXV0b3NjYWxlciJ9.TNIGCrAQ3_I7pJVw3LYLgJD-XkuWXYPsmnRO2ICPSExgCyHDITiB6kUZwTUPcT_csuXMJ1SZ0Qk8UrHjK-8I2UeyLgTcyd80WELgGVBnvuY0IoIXyBDBI6-yovOcjtpgI_POTuSYMQ1T1dGfMxqha5P1X9UUqfJdKQAYpnb3Pf17LI1e8P0X5MN2Fo4BF8BP0dCw313l0s4qK7g1gU4c8aaNfIcFD56wCqFEYD6TNOmy9Od-qTUbkqH0laBmdlUGszQz2dZAgvZzVFSiK5fBc4pO2n4qSRKsTZNX1A1jfZxj44la9kC6LGIHwtwbx1HPwwQ1R3WlouSzSwCjSttiVQ
+
+
+Name:         job-controller-token-pwqss
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=job-controller
+              kubernetes.io/service-account.uid=60048e4b-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJqb2ItY29udHJvbGxlci10b2tlbi1wd3FzcyIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJqb2ItY29udHJvbGxlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjYwMDQ4ZTRiLWEyMDEtMTFlOC1iOTNlLTAyYjMxMzRkOGI2OCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTpqb2ItY29udHJvbGxlciJ9.JSk-l0SVcXQneaHM49RpOQX-jxZCKWsNiqe5aHCR0uzXUDaianxYfR0xv0UFMfPXkKnevSDBmjp2sbMdU1RUZaKJvMY1Zl_sh-57DTLO99AqNcSaSlosy1kDR52Q55IS8sb6BwiItTqfAZZLn72qzBOyM0xwcL0rdOel8km2CxBAbjJLk8mQLFsp1Nekub_pyf25oF2voy-9Ik_WYwxlbzkcpZyDN41F7pxVbYuzxUrb2LsQnHUAnMg5StcM12F1-SvYquonyrtJ2_ZTnDLUn6hLcr9kAicLxqtWp8ertCIoZGuJlBgVdgbLIXZtzOPocEfh6-yqQDM2DT5bsHhU9A
+
+
+Name:         kube-proxy-token-nq9tb
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=kube-proxy
+              kubernetes.io/service-account.uid=5e03f610-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJlLXByb3h5LXRva2VuLW5xOXRiIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6Imt1YmUtcHJveHkiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1ZTAzZjYxMC1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06a3ViZS1wcm94eSJ9.tUh2csLPaVWYps7cf1wP7vrc1n_WrwdfT4ruBEP19CfBeyiz123by5jjlv9J5EHdYS2HPbVcjdpbjnLmkVywjkh8cfvu6uJjjxvpOS_tIAjPx2WcXPuvvb01zMzUVxKbOBQygg3OTS4QKOBGoVRdNI0Gcx09If38-hB2b_NqMaXKnMXHmYnedJ9tzkD5VBzu-_lXz8RNHoYjwDCNnDe51gbHvtyQcNgpth2pDYyfeoB4DBfuz70SE3UWPBSKUOLikradisq4EU2oDAdxhj70mM-LGNzxn5YrDBfRt_KSdDcwJPpR2EXYZfMUu1lHBi2INKKDzL7Urn3WxESK4j5xjw
+ca.crt:     1025 bytes
+
+
+Name:         kubernetes-dashboard-certs
+Namespace:    kube-system
+Labels:       k8s-app=kubernetes-dashboard
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+
+
+Name:         kubernetes-dashboard-key-holder
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+priv:  1679 bytes
+pub:   459 bytes
+
+
+Name:         kubernetes-dashboard-token-9qxlw
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=kubernetes-dashboard
+              kubernetes.io/service-account.uid=4e9d7100-a204-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZC10b2tlbi05cXhsdyIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjRlOWQ3MTAwLWEyMDQtMTFlOC1iOTNlLTAyYjMxMzRkOGI2OCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTprdWJlcm5ldGVzLWRhc2hib2FyZCJ9.M3WG1tKUgJsIUH87-jwUyOjQZ7vukHeUoAPuhZoIcdrU64nZ9_ufq_XmzsY5Fb_LrhE90GvNSU51KYjt61-pRmJslJzLjsWA35Srrm3ccVWSKInzr67K2ZXHt1fZ16vW6i4ZUMXsPDexSrTxDj-xnI1sxsNoJ_adW9tNVOPElWOE3KyuGWwSMF2oYO9SmNBpgCmC91wDuSqFerBCPHGMynbp6BYLdicMSBE5T3ayQswudLnLyW094jw4j-0DjEhIo2wdsBYdS7GD2j0jsheUleZuKqg6B9VnucAPkbsottbmWt3s8D4Wx6hMojJc1fBDvARNV8UiOBxpmiWZk5umYw
+
+
+Name:         namespace-controller-token-747sr
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=namespace-controller
+              kubernetes.io/service-account.uid=5ed35f4c-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJuYW1lc3BhY2UtY29udHJvbGxlci10b2tlbi03NDdzciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJuYW1lc3BhY2UtY29udHJvbGxlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjVlZDM1ZjRjLWEyMDEtMTFlOC1iOTNlLTAyYjMxMzRkOGI2OCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTpuYW1lc3BhY2UtY29udHJvbGxlciJ9.wBnwc1LcoyqMHGFlEQOJzLeDcev-6wk24lLO0LnNXsscMsbJxrnHmdFzpRnRXDZr9_k4UEAxGG_EOVFpiMZwy8GN40EAeMtOBTZZDYnrD2f2o86Y-99jlX-hyjnxkduKuISAvlm_BEmfkdf74MsPAzxGPZE9_wJfw7XKvxoqPh6JY9o2puv68RP64kjGDtibQgsrTSlWVf0Ph-dpX1CMaZP2rwFYVd9GjulF6zNcteRXmcQPEokH-nyZWC2yTkLqTh2wdQ3WhYRXAnQ2TCxOnLbDval61lw27zHA4H-2JVsg8SmkCmdD2x2f3vh5Vd5MHU-E-0BAH0JC3caOXLljgA
+
+
+Name:         node-controller-token-bzzbn
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=node-controller
+              kubernetes.io/service-account.uid=5da22b3c-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJub2RlLWNvbnRyb2xsZXItdG9rZW4tYnp6Ym4iLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoibm9kZS1jb250cm9sbGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNWRhMjJiM2MtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOm5vZGUtY29udHJvbGxlciJ9.eham_oiSSPsYFhL3vSX4z2RTDmAUaSmCza--hL1lIZmvYtGSEh6lVu3KHWBZ5SGikGyBgqCFm1vRyEkCodVJB-MRrnTC2bt1oNmuqkfXHxYjBXCKu7kdT5SSIhGazfHxV4KirUpT5ucQa_6ok0hcdEofg99RWxEtqx5d8MPDRjHoVIeFezavq_0BzedOoTKU3eTCsyhGPegh6lIy-sBX7AAcfSbILM43xZ7HwAuY_5hdknO2zzdkPSY4_76Tg6EKe3tiTc7rttFWEN4rzqXBB9MXR26p_AQnQx8qUFAV2l0jEb-mCjkGN9Qt-8-Kh6EdrG4YPgUQ3Loslmcf7L-PDA
+ca.crt:     1025 bytes
+
+
+Name:         persistent-volume-binder-token-mmn74
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=persistent-volume-binder
+              kubernetes.io/service-account.uid=60419828-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJwZXJzaXN0ZW50LXZvbHVtZS1iaW5kZXItdG9rZW4tbW1uNzQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoicGVyc2lzdGVudC12b2x1bWUtYmluZGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNjA0MTk4MjgtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOnBlcnNpc3RlbnQtdm9sdW1lLWJpbmRlciJ9.DGXpe1Af6WXkRFq6QwDel9oDrIJZ5WcqqSMnDkmgQWBztC3f0uCH5ndVpqEAvCJGNJFZiSlWRUgt2RfzdVmGzE6C6TuD4MGCIRBKEmVuhQfQ2-Amm52fYRx02zUQKomi6Oxqq-d7E96O6qTviShKjHOa0Em2aZm9QMIYigBhehBsbTpDAU0xMynm8v4Shx94CwqTztS1q1s51lwSxaCFaSTwJXQ-Qy7XWLfMn6Z4-yZDGLszDyUma9d6ptrrfZBsGfhFZCKBmzYAoB5bxuBAEzIGdGEISR5pu445M12z2icJzj3dSvArjP3hKLbfbFtIqobMWvya-LBGy7Jgnes1Hw
+
+
+Name:         pod-garbage-collector-token-mmxh4
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=pod-garbage-collector
+              kubernetes.io/service-account.uid=5d992d1e-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJwb2QtZ2FyYmFnZS1jb2xsZWN0b3ItdG9rZW4tbW14aDQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoicG9kLWdhcmJhZ2UtY29sbGVjdG9yIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNWQ5OTJkMWUtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOnBvZC1nYXJiYWdlLWNvbGxlY3RvciJ9.12ACmp272wCZrD5ZAMt8duWH8X8Ga9F-Z_XS4kqs8CEs95dYaazQnV1vGhnzAUKLlCDm-Mi6l1ODyaBEWrZewWw8CNlkb4AaBm_NxcE_spmOBCzv5vlRUGt6lEdpI7RsbewDxDWRxaETKSxhGkooVTg1ZP2Mr_Jg-pMk3SKxL2WEnJnMSQfI94qsyMjPyvTNjs8C2CQtSCpzoJxFZOy4o3N1QMM_vAtaYezsbbYQMz1cM8WlCoT8W6_JZsVQIIrh2zaspCrkl6OXoFR7Jn9gsWq9sxfEAyKeOlrykD4p9M7GnUbBwGMjsqMXUbEK-TWLrh7oBDgHi3pPJsGOsmEW5w
+
+
+Name:         pv-protection-controller-token-7d4h4
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=pv-protection-controller
+              kubernetes.io/service-account.uid=60b413e3-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJwdi1wcm90ZWN0aW9uLWNvbnRyb2xsZXItdG9rZW4tN2Q0aDQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoicHYtcHJvdGVjdGlvbi1jb250cm9sbGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNjBiNDEzZTMtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOnB2LXByb3RlY3Rpb24tY29udHJvbGxlciJ9.N0IUQxVItkI7flvZSuWltmS4cATPcRhYNU33TBEDWaUwh8YLTJOrq0XAq36UNVVn9MfPCKn0XJT4evjQmIXUqH64BR4KoDT8V_JCB8CkTzNPfhQTBIsQQ4VpQZaAQxhAx-X69pQlOw-vt0LebHeol-oxOP8JQxASDZ-0q1hX_ApafpnWo_NNzHzoCgh9acMP3wVZ8M1niXjd4iarsRTX5nMdwxVdug1yTcR_7ljd00TZKKL2Brtk1q6y12OFf8C5pUuibmu2QrZ0m9pqSv1Z36hqLy2zSwVmmolyB_Yuha6Oc19DF5prmHUCLqm7xpB55nzuQPvIBLECsoLyHWbZig
+
+
+Name:         pvc-protection-controller-token-wmqc2
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=pvc-protection-controller
+              kubernetes.io/service-account.uid=5da4ceb9-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJwdmMtcHJvdGVjdGlvbi1jb250cm9sbGVyLXRva2VuLXdtcWMyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6InB2Yy1wcm90ZWN0aW9uLWNvbnRyb2xsZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1ZGE0Y2ViOS1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06cHZjLXByb3RlY3Rpb24tY29udHJvbGxlciJ9.NVS7gEvhbS6RCJ6GoUOl0xQY8gzdRbWMa45IK_SnvK3yWSrCbfi4BYqZEcmRw_Aw36DLXzBgcdGpfT-X-0UYAWt9BR1al1XioTyxp2frgviUlr2om_aQ212b7uZB3KeLfFLRAoUSEPwYxz778U_bW9xNMyVnyq9Qp9ftgw2x3Qjqu19wJVYpwFIH0vxSe1hFaZe80UPP3nyVv39CxzDLfg1D-2uMqQXv9t4oX8YPKlkDzX2PZMTSfTAh_d3pvvKo1NMx6w4VEJndmClZJlVtRpPX1crbOc8IDlgODVfvgugqaMz_Uq_wqixipEXgw-yqfUlOS9q3h2_Y1cfMxehvjw
+
+
+Name:         replicaset-controller-token-svxgh
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=replicaset-controller
+              kubernetes.io/service-account.uid=6126825d-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJyZXBsaWNhc2V0LWNvbnRyb2xsZXItdG9rZW4tc3Z4Z2giLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoicmVwbGljYXNldC1jb250cm9sbGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNjEyNjgyNWQtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOnJlcGxpY2FzZXQtY29udHJvbGxlciJ9.XQgnIivAfZo-H2n1hklpblXEdUpePa_iTI8AzCufrUDsGQr230vvigbwcmb3nAFlSJYn788KNQAL4aSPSaaVpFa6K5ww8LNAEmlv7Q9w3CKNNBY2r-_tDPN-b-glm5HMs9WarM2cp2Fsq5mVUkhMeEhRoGjOLnPJzl3lMqrGpWbfXu9JXGRA_PgNYvsKPN-zL9MuPFn9zplZpBEdOEjwNUT5LZIA6ixXFfhXxsZT8Hn_Vr8MGglo-32hiZ_olXN5PjH5aCShTPtyzFzdqSHy5WmzS9JWOfzmABlRgtlEJtj_NlMWxgFiTJnbsIQEXfMF9SrOQQ4xLd0TspNcLd151A
+
+
+Name:         replication-controller-token-lqzm5
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=replication-controller
+              kubernetes.io/service-account.uid=61006139-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJyZXBsaWNhdGlvbi1jb250cm9sbGVyLXRva2VuLWxxem01Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6InJlcGxpY2F0aW9uLWNvbnRyb2xsZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI2MTAwNjEzOS1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06cmVwbGljYXRpb24tY29udHJvbGxlciJ9.HbA1E94Iyc7ZZqsbyWBP3kNAexZh-uaw4ZhLmdpu8xZmNfqz0TQnzoGVoLq43u6zGvE8t7uf60paRmpfwMBly34SpxO2xLxAZhc38zCiqRM7enOD0u_kP6-8ogR4jgBdU4i3cdC9SoWs6vi-NPq_BlrJxWWDBggcYN4P11VNZzEvJz2-b3uSGx7zdBOOYaRAFclVdQ1KgefkCcKO2fyO7AArBQn6CT4sjT7yPq0yeXVj5SpoMWZQ6VDnf_K9uC4ZTEmsocnaNB_oTw3M2sm1rkeYI2fyTmlRzbyNKfj_NbPIeAzcRrNA60GoLlVIP4oXaVVt33RVLrB_VaLd1nmtyQ
+
+
+Name:         resourcequota-controller-token-8555z
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=resourcequota-controller
+              kubernetes.io/service-account.uid=5f6bfa09-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJyZXNvdXJjZXF1b3RhLWNvbnRyb2xsZXItdG9rZW4tODU1NXoiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoicmVzb3VyY2VxdW90YS1jb250cm9sbGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNWY2YmZhMDktYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOnJlc291cmNlcXVvdGEtY29udHJvbGxlciJ9.sfCLCQdcTjO1Y4Rt3F_g_2yuzGqy9fR2OkVzxnhlLAXQvDdIfHFZJdQP2iu7LJMOyDLQhvkvShZiGbgv9A5xRGyfuc8BSW3_Oz2bRpyVbt0v93Au3vyWIL0S0N-cgtvlwIGLnrAnxRrYWPLh0wdo0hZg9E26_71uFJ9A9dFMxqxPbz6CiAJYhGEBDlukIy53-WH_MRgcmcsoB7HXQ1le1uAP3cHXAeo8EoNH-WGa96MT33dMTvjOoKwC5nQWFY_NOQV2RGOmd4P1x1GG63FAmj6pKrwv-jQPceRXstgSSIjNKoBy1KhNhvfCC4P4dqHUXORqrVa_ZSkPMVC07e3hYQ
+
+
+Name:         service-account-controller-token-cf4ch
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=service-account-controller
+              kubernetes.io/service-account.uid=5ef985cf-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJzZXJ2aWNlLWFjY291bnQtY29udHJvbGxlci10b2tlbi1jZjRjaCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJzZXJ2aWNlLWFjY291bnQtY29udHJvbGxlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjVlZjk4NWNmLWEyMDEtMTFlOC1iOTNlLTAyYjMxMzRkOGI2OCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTpzZXJ2aWNlLWFjY291bnQtY29udHJvbGxlciJ9.yPGdri8UeAQuZFL-mi1Nz7XEikGjBZD4tFHqXUGAIlFiO_HtS2Cg90YLgq4goySBTjtfdDpTOXrj8Y-Tr1UyNOA97aZ3-IzY5oPliWy83h0nWSH5ZhbfeAgHsOEG-eE6B_ttCH5Z2w7YwWhPZp86TiyS9dVMQv60DNmlZ9c7VwO-hErWfY8CVToKwa4a3dDaEaUq9b25gbxa-E1NjSylxHx2TP_GPwY74s19a8_ePkXOwOPCmdKLrT9FvYCNEj9nnqscpggdx_pVgd4KXEVDQSK1BQnz5vIkh3nc-fTDXWy0GlubyfmDF6QY-uaeJOKOsFL1kq8b_xuTBnEvBSC4PA
+
+
+Name:         service-controller-token-qp7nl
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=service-controller
+              kubernetes.io/service-account.uid=5e058705-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJzZXJ2aWNlLWNvbnRyb2xsZXItdG9rZW4tcXA3bmwiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoic2VydmljZS1jb250cm9sbGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNWUwNTg3MDUtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOnNlcnZpY2UtY29udHJvbGxlciJ9.n1Z3i-XKEa-GSC71aqfid18rC5dl3CLgI-dz1FpKYR8gNoolKoqMSBRCTyTLs-s34WvKgfaw6UAL2ZofJUSQbF3X9oWzOF3ti11Mt-tbCc3aDzIbI-BIdkkHjw0plB_qale27ee19Xfml__Ur9rlVhp1HbQbSGxaPrA6tvsZMkYFMvUF5fiIJAh4VmrM9Hn27T6sHNATeXUGZvbPEWBPxx5C6_JGqbuBEGtUeziZ5DFEQChH2zgjfNX9dHKI5683wYXki-ahYCaaPFKCa5oMPCOUwiQMoo3bcHtvXW4eVu14hAOxIp_S8Om-6pqWO6xUdgLSpjwC3-XaqxgKfdPB4Q
+
+
+Name:         statefulset-controller-token-8qs8z
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=statefulset-controller
+              kubernetes.io/service-account.uid=6067bdb8-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJzdGF0ZWZ1bHNldC1jb250cm9sbGVyLXRva2VuLThxczh6Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6InN0YXRlZnVsc2V0LWNvbnRyb2xsZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI2MDY3YmRiOC1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06c3RhdGVmdWxzZXQtY29udHJvbGxlciJ9.TslKft6uAlPM-8LvkqeYav9U2hHQPiR2PwvehTOn40MQ_3-gu2xOrPKxwxEt4Pgn9m3JC9lOekMg63ye1wCNyvbzFgvpz5TT8CidwcV9nZQe0HYRGwSFvtHffd1YT05cOwOvdv5TKNWu1RfW5LMzduTrUh_7MOWdX1z4wbw2N7wG0gYrlZ6s39tElgqJ-Pip3VfuCKSmgsso8U-1qNvMb24C9oGTk2GKI5mlwHFRxD6aZ4PnQZUMPxxjhfG0xrPWFtFoxOhgs-eraAQGT5Y7zQQySxF6iJZ0TioISrN3vVWN2Xdcq6yclxUIiuoW4wsSNigoZFYPNNA01QOHVh5tlA
+
+
+Name:         token-cleaner-token-2dk48
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=token-cleaner
+              kubernetes.io/service-account.uid=608de3b3-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJ0b2tlbi1jbGVhbmVyLXRva2VuLTJkazQ4Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6InRva2VuLWNsZWFuZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI2MDhkZTNiMy1hMjAxLTExZTgtYjkzZS0wMmIzMTM0ZDhiNjgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06dG9rZW4tY2xlYW5lciJ9.VsztN-pkzVxJnYV8LaKhAxy3wr_BmoqGZJfEH1GJhqI_fcb48Ye4Ozt5JV8qQO0O6P5mF87Xj77t6y1lezOdwDLZBkXcefthzoaVP0SHHslAGosuxXu5vXDyVfWCB0ywQ0ANNopUhs6gQlGtn_cUjN3JG0ybK1eoFe_oYT4BdRW0atsK61qkBLAyt24pYYCLYyrCZosF-KLy0WzSGMg0IVjUtm8SI3Czk3qYtd_ztE8z_YKVtvVlKwcO-SzpaZEZY3xNHA0YTeQYXHZJJXf71wF4R5bYUJ5lUfTgmsmGqZbXsOsnppv9bazKUJ1kgfC9FnHWbEOR4XkbVbb1_N6tWA
+
+
+Name:         ttl-controller-token-wcr6z
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=ttl-controller
+              kubernetes.io/service-account.uid=5f45da63-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJ0dGwtY29udHJvbGxlci10b2tlbi13Y3I2eiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJ0dGwtY29udHJvbGxlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjVmNDVkYTYzLWEyMDEtMTFlOC1iOTNlLTAyYjMxMzRkOGI2OCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTp0dGwtY29udHJvbGxlciJ9.CrUN8RLv4_CfNGKQ0VteDeSPjgMz-t9xLPA5P4mMAY9pm-sriZE9hQywW5AYmcjSX16wluZg9ALFDHmme6xcI5rBKRQzUaRbSpd_G8zYyNlwXe1oD_XGep0QargSsIQ-qBSKrIeLhqkESJLS50y5ieErjU0BhN21IoV2K6iBuXnvf4coQMhwmyafxarbLTEehPhAaLvR6FteQ4ONwnQ2pvHNhRe1fVLrMwGO2qG4Ysa0RYeqzbETbQY63i590TVAYa3OGJeHTCpQJiOHACxDO-NwK2eOIP_xdXU7IYpLF7eYXskLe5OLmboC7r78EoMr6bWAcY18VwxYR35Rp0bFJA
+ca.crt:     1025 bytes
+namespace:  11 bytes
+
+
+Name:         weave-net-token-f6twj
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=weave-net
+              kubernetes.io/service-account.uid=b6dd2396-a201-11e8-b93e-02b3134d8b68
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJ3ZWF2ZS1uZXQtdG9rZW4tZjZ0d2oiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoid2VhdmUtbmV0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiYjZkZDIzOTYtYTIwMS0xMWU4LWI5M2UtMDJiMzEzNGQ4YjY4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOndlYXZlLW5ldCJ9.n-Fu3Mf7UMH0Ntw24A7PmSsmibupcGQr1mtTqG2fhaB4ZEx6pw2NVRAiLai7fLJpJP-e-wwphZjpvpff7RxwqBP4gf3qJIa-nnvaQWw7r7HzoJadA2IaXDIrCn_LNa7AwW9w5BlfcIn8OdOwJzAShMMnLkuPrskT_eMOlAkjKbxSJLt5eWGEvFdkbWQ3-F2xZWRNbGVhTkF9OWR8EToOtJpyalHeKPQJ1i61L9iMIXYslQ5WH0aYhe0tIWNywMSGzbBtWKgaEoQcb98-JGDtayg-fhAyMtoYgbBtexPEl01cR58cFWv5eRyHbIVXPSJDvuRCFP2l3kYNnXrLPqG2bw
+root@ip-172-31-0-189:~# kubectl proxy
+Starting to serve on 127.0.0.1:8001
+^C
+root@ip-172-31-0-189:~# curl http://127.0.0.1:8001
+curl: (7) Failed to connect to 127.0.0.1 port 8001: Connection refused
+root@ip-172-31-0-189:~# curl http://172.31.0.189:8001
+curl: (7) Failed to connect to 172.31.0.189 port 8001: Connection refused
+root@ip-172-31-0-189:~# kubectl get pods
+NAME                       READY     STATUS             RESTARTS   AGE
+testing-6b6b5769fb-57d5w   0/1       CrashLoopBackOff   6          9m
+testing-6b6b5769fb-lswtf   0/1       CrashLoopBackOff   6          9m
+testing-6b6b5769fb-tpgzc   0/1       CrashLoopBackOff   6          9m
+root@ip-172-31-0-189:~# kubectl apply -f https://k8s.io/examples/application/deployment.yaml
+deployment.apps/nginx-deployment created
+root@ip-172-31-0-189:~# kubectl describe deployment nginx-deployment
+Name:                   nginx-deployment
+Namespace:              default
+CreationTimestamp:      Fri, 17 Aug 2018 10:12:43 +0000
+Labels:                 <none>
+Annotations:            deployment.kubernetes.io/revision=1
+                        kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"nginx-deployment","namespace":"default"},"spec":{"replicas":2,"selecto...
+Selector:               app=nginx
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=nginx
+  Containers:
+   nginx:
+    Image:        nginx:1.7.9
+    Port:         80/TCP
+    Host Port:    0/TCP
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   nginx-deployment-67594d6bf6 (2/2 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  13s   deployment-controller  Scaled up replica set nginx-deployment-67594d6bf6 to 2
+root@ip-172-31-0-189:~# kubectl get pods -l app=nginx
+NAME                                READY     STATUS    RESTARTS   AGE
+nginx-deployment-67594d6bf6-hl2g9   1/1       Running   0          34s
+nginx-deployment-67594d6bf6-p6sd6   1/1       Running   0          34s
+root@ip-172-31-0-189:~# kubectl describe pod nginx-deployment-67594d6bf6-hl2g9
+Name:               nginx-deployment-67594d6bf6-hl2g9
+Namespace:          default
+Priority:           0
+PriorityClassName:  <none>
+Node:               ip-172-31-32-137/172.31.32.137
+Start Time:         Fri, 17 Aug 2018 10:12:43 +0000
+Labels:             app=nginx
+                    pod-template-hash=2315082692
+Annotations:        <none>
+Status:             Running
+IP:                 10.36.0.2
+Controlled By:      ReplicaSet/nginx-deployment-67594d6bf6
+Containers:
+  nginx:
+    Container ID:   docker://811eab450e134a023188ef249592347741af74d2e4b9324ecb046481a996106a
+    Image:          nginx:1.7.9
+    Image ID:       docker-pullable://nginx@sha256:e3456c851a152494c3e4ff5fcc26f240206abac0c9d794affb40e0714846c451
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 17 Aug 2018 10:12:49 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-pgc5t (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-pgc5t:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-pgc5t
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age   From                       Message
+  ----    ------     ----  ----                       -------
+  Normal  Scheduled  1m    default-scheduler          Successfully assigned default/nginx-deployment-67594d6bf6-hl2g9 to ip-172-31-32-137
+  Normal  Pulling    1m    kubelet, ip-172-31-32-137  pulling image "nginx:1.7.9"
+  Normal  Pulled     54s   kubelet, ip-172-31-32-137  Successfully pulled image "nginx:1.7.9"
+  Normal  Created    54s   kubelet, ip-172-31-32-137  Created container
+  Normal  Started    54s   kubelet, ip-172-31-32-137  Started container
+root@ip-172-31-0-189:~# kubectl get deployments
+NAME               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   2         2         2            2           7m
+testing            3         3         3            0           22m
+root@ip-172-31-0-189:~# kubectl get pods
+NAME                                READY     STATUS             RESTARTS   AGE
+nginx-deployment-67594d6bf6-hl2g9   1/1       Running            0          11m
+nginx-deployment-67594d6bf6-p6sd6   1/1       Running            0          11m
+testing-6b6b5769fb-57d5w            0/1       CrashLoopBackOff   9          25m
+testing-6b6b5769fb-lswtf            0/1       CrashLoopBackOff   9          25m
+testing-6b6b5769fb-tpgzc            0/1       CrashLoopBackOff   9          25m
+root@ip-172-31-0-189:~# kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml": secrets "kubernetes-dashboard-certs" already exists
+Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml": serviceaccounts "kubernetes-dashboard" already exists
+Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml": roles.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" already exists
+Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml": rolebindings.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" already exists
+Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml": deployments.apps "kubernetes-dashboard" already exists
+Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml": services "kubernetes-dashboard" already exists
+root@ip-172-31-0-189:~# kubectl proxy
+Starting to serve on 127.0.0.1:8001
+kubectl proxy --help
+^C
+root@ip-172-31-0-189:~# kubectl proxy --help
+Creates a proxy server or application-level gateway between localhost and the Kubernetes API Server. It also allows
+serving static content over specified HTTP path. All incoming data enters through one port and gets forwarded to the
+remote kubernetes API Server port, except for the path matching the static content path.
+
+Examples:
+  # To proxy all of the kubernetes api and nothing else, use:
+
+  $ kubectl proxy --api-prefix=/
+
+  # To proxy only part of the kubernetes api and also some static files:
+
+  $ kubectl proxy --www=/my/files --www-prefix=/static/ --api-prefix=/api/
+
+  # The above lets you 'curl localhost:8001/api/v1/pods'.
+
+  # To proxy the entire kubernetes api at a different root, use:
+
+  $ kubectl proxy --api-prefix=/custom/
+
+  # The above lets you 'curl localhost:8001/custom/api/v1/pods'
+
+  # Run a proxy to kubernetes apiserver on port 8011, serving static content from ./local/www/
+  kubectl proxy --port=8011 --www=./local/www/
+
+  # Run a proxy to kubernetes apiserver on an arbitrary local port.
+  # The chosen port for the server will be output to stdout.
+  kubectl proxy --port=0
+
+  # Run a proxy to kubernetes apiserver, changing the api prefix to k8s-api
+  # This makes e.g. the pods api available at localhost:8001/k8s-api/v1/pods/
+  kubectl proxy --api-prefix=/k8s-api
+
+Options:
+      --accept-hosts='^localhost$,^127\.0\.0\.1$,^\[::1\]$': Regular expression for hosts that the proxy should accept.
+      --accept-paths='^.*': Regular expression for paths that the proxy should accept.
+      --address='127.0.0.1': The IP address on which to serve on.
+      --api-prefix='/': Prefix to serve the proxied API under.
+      --disable-filter=false: If true, disable request filtering in the proxy. This is dangerous, and can leave you
+vulnerable to XSRF attacks, when used with an accessible port.
+  -p, --port=8001: The port on which to run the proxy. Set to 0 to pick a random port.
+      --reject-methods='^$': Regular expression for HTTP methods that the proxy should reject (example
+--reject-methods='POST,PUT,PATCH').
+      --reject-paths='^/api/.*/pods/.*/exec,^/api/.*/pods/.*/attach': Regular expression for paths that the proxy should
+reject. Paths specified here will be rejected even accepted by --accept-paths.
+  -u, --unix-socket='': Unix socket on which to run the proxy.
+  -w, --www='': Also serve static files from the given directory under the specified prefix.
+  -P, --www-prefix='/static/': Prefix to serve static files under, if static file directory is specified.
+
+Usage:
+  kubectl proxy [--port=PORT] [--www=static-dir] [--www-prefix=prefix] [--api-prefix=prefix] [options]
+
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+root@ip-172-31-0-189:~# kubectl get deployment
+NAME               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   2         2         2            2           18m
+testing            3         3         3            0           33m
+root@ip-172-31-0-189:~# kubectl describe deployment
+Name:                   nginx-deployment
+Namespace:              default
+CreationTimestamp:      Fri, 17 Aug 2018 10:12:43 +0000
+Labels:                 <none>
+Annotations:            deployment.kubernetes.io/revision=1
+                        kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"nginx-deployment","namespace":"default"},"spec":{"replicas":2,"selecto...
+Selector:               app=nginx
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=nginx
+  Containers:
+   nginx:
+    Image:        nginx:1.7.9
+    Port:         80/TCP
+    Host Port:    0/TCP
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   nginx-deployment-67594d6bf6 (2/2 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  18m   deployment-controller  Scaled up replica set nginx-deployment-67594d6bf6 to 2
+
+
+Name:                   testing
+Namespace:              default
+CreationTimestamp:      Fri, 17 Aug 2018 09:58:05 +0000
+Labels:                 run=testing
+Annotations:            deployment.kubernetes.io/revision=1
+Selector:               run=testing
+Replicas:               3 desired | 3 updated | 3 total | 0 available | 3 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  run=testing
+  Containers:
+   testing:
+    Image:      nginx
+    Port:       <none>
+    Host Port:  <none>
+    Args:
+      deployment
+      testing
+      created
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      False   MinimumReplicasUnavailable
+  Progressing    False   ProgressDeadlineExceeded
+OldReplicaSets:  <none>
+NewReplicaSet:   testing-6b6b5769fb (3/3 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  33m   deployment-controller  Scaled up replica set testing-6b6b5769fb to 3
+root@ip-172-31-0-189:~# kubectl scale deployment nginx-deployment --replicas=10
+deployment.extensions/nginx-deployment scaled
+root@ip-172-31-0-189:~# kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80
+horizontalpodautoscaler.autoscaling/nginx-deployment autoscaled
+root@ip-172-31-0-189:~# kubectl get deploy
+NAME               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   10        10        10           10          20m
+testing            3         3         3            0           34m
+root@ip-172-31-0-189:~# kubectl set image deploy/nginx-deployment nginx=nginx:latest
+deployment.extensions/nginx-deployment image updated
+root@ip-172-31-0-189:~# kubectl get rs
+NAME                          DESIRED   CURRENT   READY     AGE
+nginx-deployment-67594d6bf6   0         0         0         21m
+nginx-deployment-7f4bfdf584   10        10        10        11s
+testing-6b6b5769fb            3         3         0         35m
+root@ip-172-31-0-189:~# kubectl get deploy
+NAME               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   10        10        10           10          21m
+testing            3         3         3            0           36m
+root@ip-172-31-0-189:~# kubectl get pods
+NAME                                READY     STATUS             RESTARTS   AGE
+nginx-deployment-7f4bfdf584-9gtrl   1/1       Running            0          1m
+nginx-deployment-7f4bfdf584-btbhl   1/1       Running            0          1m
+nginx-deployment-7f4bfdf584-ckh58   1/1       Running            0          1m
+nginx-deployment-7f4bfdf584-f54mz   1/1       Running            0          1m
+nginx-deployment-7f4bfdf584-glckp   1/1       Running            0          1m
+nginx-deployment-7f4bfdf584-kxps5   1/1       Running            0          1m
+nginx-deployment-7f4bfdf584-qh5b6   1/1       Running            0          1m
+nginx-deployment-7f4bfdf584-qzgvj   1/1       Running            0          1m
+nginx-deployment-7f4bfdf584-rcp6b   1/1       Running            0          1m
+nginx-deployment-7f4bfdf584-z8tw6   1/1       Running            0          1m
+testing-6b6b5769fb-57d5w            0/1       CrashLoopBackOff   11         36m
+testing-6b6b5769fb-lswtf            0/1       CrashLoopBackOff   11         36m
+testing-6b6b5769fb-tpgzc            0/1       CrashLoopBackOff   11         36m
+root@ip-172-31-0-189:~# kubectl describe pods nginx-deployment-7f4bfdf584-9gtrl
+Name:               nginx-deployment-7f4bfdf584-9gtrl
+Namespace:          default
+Priority:           0
+PriorityClassName:  <none>
+Node:               ip-172-31-32-137/172.31.32.137
+Start Time:         Fri, 17 Aug 2018 10:33:37 +0000
+Labels:             app=nginx
+                    pod-template-hash=3906989140
+Annotations:        <none>
+Status:             Running
+IP:                 10.36.0.6
+Controlled By:      ReplicaSet/nginx-deployment-7f4bfdf584
+Containers:
+  nginx:
+    Container ID:   docker://d1f8ab298bb58c44eca428fdbec26a7c7c8463d12f381a7556f0800a273dd22e
+    Image:          nginx:latest
+    Image ID:       docker-pullable://nginx@sha256:d85914d547a6c92faa39ce7058bd7529baacab7e0cd4255442b04577c4d1f424
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 17 Aug 2018 10:33:38 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-pgc5t (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-pgc5t:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-pgc5t
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age   From                       Message
+  ----    ------     ----  ----                       -------
+  Normal  Scheduled  1m    default-scheduler          Successfully assigned default/nginx-deployment-7f4bfdf584-9gtrl to ip-172-31-32-137
+  Normal  Pulled     1m    kubelet, ip-172-31-32-137  Container image "nginx:latest" already present on machine
+  Normal  Created    1m    kubelet, ip-172-31-32-137  Created container
+  Normal  Started    1m    kubelet, ip-172-31-32-137  Started container
+root@ip-172-31-0-189:~# kubectl describe pod nginx-deployment-7f4bfdf584-9gtrl | grep IP | awk '{print $2}'
+10.36.0.6
+root@ip-172-31-0-189:~# history
+    1  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add
+    2  vi /etc/apt/sources.list.d/kubernetes.list
+    3  cat /etc/apt/sources.list.d/kubernetes.list
+    4  apt-get update
+    5  apt-get install -y docker.io
+    6  docker version
+    7  apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+    8  kubeadm init
+    9  kubectl get node
+   10  mkdir -p $HOME/.kube
+   11  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+   12  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+   13  kubectl get node
+   14  kubectl get pods --all-namespaces
+   15  sysctl net.bridge.bridge-nf-call-iptables=1
+   16  export kubever=$(kubectl version | base64 | tr -d '\n')
+   17  kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+   18  kubectl get nodes
+   19  kubectl get pods --all-namespaces
+   20  kubectl get nodes
+   21  kubectl get pods --all-namespaces
+   22  kubectl get nodes
+   23  kubectl get pods --all-namespaces
+   24  kubectl run testing --image=nginx --replicas=3 deployment "testing" created
+   25  kubectl get pods
+   26  kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+   27  vi service.yaml
+   28  cat service.yaml
+   29  kubectl apply -f service.yaml
+   30  kubectl apply -f service.yaml
+   31  kubectl apply -f service.yaml --validate=false
+   32  vi rolebinding.yaml
+   33  kubectl apply -f rolebinding.yaml
+   34  vi rolebinding.yaml
+   35  kubectl apply -f rolebinding.yaml
+   36  kubectl apply -f rolebinding.yaml --validate=false
+   37  kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+   38  kubectl proxy
+   39  curl http://127.0.0.1:8001
+   40  curl http://172.31.0.189:8001
+   41  kubectl get pods
+   42  kubectl apply -f https://k8s.io/examples/application/deployment.yaml
+   43  kubectl describe deployment nginx-deployment
+   44  kubectl get pods -l app=nginx
+   45  kubectl describe pod nginx-deployment-67594d6bf6-hl2g9
+   46  kubectl get deployments
+   47  kubectl get pods
+   48  kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+   49  kubectl proxy
+   50  kubectl proxy --help
+   51  kubectl get deployment
+   52  kubectl describe deployment
+   53  kubectl scale deployment nginx-deployment --replicas=10
+   54  kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80
+   55  kubectl get deploy
+   56  kubectl set image deploy/nginx-deployment nginx=nginx:latest
+   57  kubectl get rs
+   58  kubectl get deploy
+   59  kubectl get pods
+   60  kubectl describe pods nginx-deployment-7f4bfdf584-9gtrl
+   61  kubectl describe pod nginx-deployment-7f4bfdf584-9gtrl | grep IP | awk '{print $2}'
+   62  history
+root@ip-172-31-0-189:~# Connection to ec2-18-191-168-132.us-east-2.compute.amazonaws.com closed by remote host.
+Connection to ec2-18-191-168-132.us-east-2.compute.amazonaws.com closed.
+
+Administrator@EC2AMAZ-8AU796Q MINGW64 ~/Desktop
+$

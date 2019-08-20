@@ -1,0 +1,30 @@
+version: '3'
+services:
+  chrome:
+    image: selenium/node-chrome:3.14.0
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      HUB_HOST: selenium-hub
+      HUB_PORT: 4444
+      NODE_MAX_INSTANCES: 5
+      NODE_MAX_SESSION: 5
+
+  firefox:
+    image: selenium/node-firefox:3.14.0
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      HUB_HOST: selenium-hub
+      HUB_PORT: 4444
+      NODE_MAX_INSTANCES: 5
+      NODE_MAX_SESSION: 5
+
+  selenium-hub:
+    image: selenium/hub:3.14.0
+    ports:
+      - "4444:4444"

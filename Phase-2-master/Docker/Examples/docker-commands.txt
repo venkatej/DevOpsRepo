@@ -1,0 +1,90 @@
+docker commands:
+
+docker version
+
+docker info
+
+docker search [imageName]
+
+docker pull [imageName]
+
+docker pull [imageName]:[version]
+
+docker images
+
+docker images -a -s -q
+
+docker run -it -d --name=[container_name] -p [externalPort:internalPort] [imageName]:[tag/version]
+
+docker ps
+
+docker ps -a -s -q
+
+docker container ls
+
+docker container ls --all
+
+Display Container IP address: 
+
+	docker inspect web_container | grep IPAddress | cut -d '"' -f 4
+
+	docker inspect -f "{{.NetworkSettings.IPAddress}}" web_container
+
+display the running processes of a container:
+
+	docker top {Container_Name_OR_ID}
+	
+Containers’ resource usage statistics: To Display CPU, memory, and network I/O usage of all the containers use ‘docker stats‘
+
+	docker stats
+	
+	docker stats --no-stream (Resource usage statistics without live streaming)
+	
+Fetching Logs from the Container:
+
+	docker logs xibodocker_cms-web_1
+	
+	docker logs -f  xibodocker_cms-web_1 (To fetch the live logs use ‘-f’ option in docker logs command)
+	
+Display History of Docker Image: History of Docker image here means what commands are being executed while building docker images, we can list these commands using ‘docker history‘
+
+	docker history {Image_Name_OR_Image_id}
+	
+Export and Import Container to/from tar archive:
+
+	docker export web_container -o  web_container.tar
+	
+	docker import web_container.tar
+	
+Save and Load Docker Container Image to/from a tar file: Let’s assume we have done some changes in debian image and we want to export it as tar file, this can be done with ‘docker save‘ command, example is shown below (These commands become useful when we want to transfer docker image from one Docker Host to another.)
+
+	docker save debian -o mydebian.tar
+	
+	docker load -i mydebian.tar
+	
+Search Docker Images in its Registry Server: 
+
+	docker search debian
+	
+create and prepare a container: 
+
+	docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
+	
+	ex: docker create hello-world
+	
+	docker start hello-world
+	
+Login to docker local registry: 
+
+	docker login localhost:8080
+	
+Setup local registry: (local docker hub): https://docs.docker.com/registry/deploying/#run-a-local-registry
+
+
+	
+
+	
+
+	
+
+

@@ -1,0 +1,18 @@
+---
+- hosts: rhel-1
+  tasks:
+    - name: installing wget package
+      yum: name=wget state=latest
+    - name: download maven to rhel-1
+      get_url:
+        url: http://mirror.cogentco.com/pub/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+        dest: /root/
+
+- hosts: rhel-2
+  tasks:
+    - name: installing wget package
+      yum: name=wget state=latest
+    - name: download jenkins to rhel-2
+      get_url:
+        url: http://updates.jenkins-ci.org/download/war/2.135/jenkins.war
+        dest: /root/

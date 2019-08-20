@@ -1,0 +1,39 @@
+docker file examples:
+
+FROM tomcat
+
+MAINTAINER venkat
+
+RUN apt-get update && apt-get -y upgrade
+
+WORKDIR /usr/local/tomcat
+
+COPY tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
+COPY context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
+
+EXPOSE 8080
+
+context.xml
+
+<Context antiResourceLocking="false" privileged="true" >
+    <!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+        allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+    <Manager sessionAttributeValueClassNameFilter="java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"/>
+</Context>
+
+tomcat-users.xml
+
+<tomcat-users xmlns="http://tomcat.apache.org/xml"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
+              version="1.0">
+  <user username="admin" password="secret" roles="manager-gui"/>
+</tomcat-users>
+
+docker build -t name/tomcat .
+docker run -d -p 8080:8080 --name some_name name/tomcat
+
+
+for jenkins
+
+ADD https://updates.jenkins-ci.org/download/war/2.174/jenkins.war /usr/local/tomcat/webapps

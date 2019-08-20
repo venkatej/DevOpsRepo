@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: jen-nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: jen-nginx
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+        ports:
+        - containerPort: 80
+
+      - name: jenkins-container
+        image: jenkins
+        ports:
+        - containerPort: 8080

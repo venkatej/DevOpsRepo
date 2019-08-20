@@ -1,0 +1,1302 @@
+root@ip-172-31-16-220:~# kubectl version
+Client Version: version.Info{Major:"1", Minor:"11", GitVersion:"v1.11.2", GitCommit:"bb9ffb1654d4a729bb4cec18ff088eacc153c239", GitTreeState:"clean", BuildDate:"2018-08-07T23:17:28Z", GoVersion:"go1.10.3", Compiler:"gc", Platform:"linux/amd64"}
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+root@ip-172-31-16-220:~# clear
+root@ip-172-31-16-220:~# aws configure
+AWS Access Key ID [None]: AKIAI6NQVFRAHWXWCOYQ
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-west-1
+Default output format [None]: json
+root@ip-172-31-16-220:~#
+root@ip-172-31-16-220:~# export bucket_name=svn-kops-state-store
+root@ip-172-31-16-220:~#
+root@ip-172-31-16-220:~# aws s3api create-bucket --bucket ${bucket_name} --region us-west-1
+
+        aws s3api put-bucket-versioning --bucket ${bucket_name} --versioning-configuration Status=Enabled
+{
+    "Location": "/svn-kops-state-store"
+}
+root@ip-172-31-16-220:~#
+root@ip-172-31-16-220:~# aws s3api put-bucket-versioning --bucket ${bucket_name} --versioning-configuration Status=Enabled
+root@ip-172-31-16-220:~# export bucket_name=svn-kops-state-store
+root@ip-172-31-16-220:~# export KOPS_CLUSTER_NAME=venkat.k8s.local
+root@ip-172-31-16-220:~# export KOPS_STATE_STORE=s3://${bucket_name}
+root@ip-172-31-16-220:~# vi ~/.profile
+root@ip-172-31-16-220:~# ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:k2nUFj8kIsHroPE5TRU5SLsLVbZ7BWQaZoD4e5abl50 root@ip-172-31-16-220
+The key's randomart image is:
++---[RSA 2048]----+
+|   . +=+O+* .    |
+|  . . oB+B *     |
+|   .  oo+.o +    |
+|  . o.oo = . .   |
+|   +.B..S .      |
+|  . =.*o o       |
+|     +.o o .     |
+|      o o E      |
+|       .         |
++----[SHA256]-----+
+root@ip-172-31-16-220:~# kops create cluster --node-count=3 --node-size=t2.medium --zones=us-west-1a --name=${KOPS_CLUSTER_NAME}
+I0906 07:00:12.119648    5428 create_cluster.go:480] Inferred --cloud=aws from zone "us-west-1a"
+I0906 07:00:12.168648    5428 subnets.go:184] Assigned CIDR 172.20.32.0/19 to subnet us-west-1a
+I0906 07:00:13.066018    5428 create_cluster.go:1351] Using SSH public key: /root/.ssh/id_rsa.pub
+Previewing changes that will be made:
+
+
+*********************************************************************************
+
+A new kubernetes version is available: 1.10.5
+Upgrading is recommended (try kops upgrade cluster)
+
+More information: https://github.com/kubernetes/kops/blob/master/permalinks/upgrade_k8s.md#1.10.5
+
+*********************************************************************************
+
+I0906 07:00:14.242411    5428 apply_cluster.go:505] Gossip DNS: skipping DNS validation
+I0906 07:00:14.266409    5428 executor.go:103] Tasks: 0 done / 77 total; 30 can run
+I0906 07:00:14.785297    5428 executor.go:103] Tasks: 30 done / 77 total; 24 can run
+I0906 07:00:15.251634    5428 executor.go:103] Tasks: 54 done / 77 total; 19 can run
+I0906 07:00:15.316528    5428 executor.go:103] Tasks: 73 done / 77 total; 3 can run
+W0906 07:00:15.332005    5428 keypair.go:140] Task did not have an address: *awstasks.LoadBalancer {"Name":"api.venkat.k8s.local","Lifecycle":"Sync","LoadBalancerName":"api-venkat-k8s-local-2ej051","DNSName":null,"HostedZoneId":null,"Subnets":[{"Name":"us-west-1a.venkat.k8s.local","ShortName":"us-west-1a","Lifecycle":"Sync","ID":null,"VPC":{"Name":"venkat.k8s.local","Lifecycle":"Sync","ID":null,"CIDR":"172.20.0.0/16","EnableDNSHostnames":true,"EnableDNSSupport":true,"Shared":false,"Tags":{"KubernetesCluster":"venkat.k8s.local","Name":"venkat.k8s.local","kubernetes.io/cluster/venkat.k8s.local":"owned"}},"AvailabilityZone":"us-west-1a","CIDR":"172.20.32.0/19","Shared":false,"Tags":{"KubernetesCluster":"venkat.k8s.local","Name":"us-west-1a.venkat.k8s.local","SubnetType":"Public","kubernetes.io/cluster/venkat.k8s.local":"owned","kubernetes.io/role/elb":"1"}}],"SecurityGroups":[{"Name":"api-elb.venkat.k8s.local","Lifecycle":"Sync","ID":null,"Description":"Security group for api ELB","VPC":{"Name":"venkat.k8s.local","Lifecycle":"Sync","ID":null,"CIDR":"172.20.0.0/16","EnableDNSHostnames":true,"EnableDNSSupport":true,"Shared":false,"Tags":{"KubernetesCluster":"venkat.k8s.local","Name":"venkat.k8s.local","kubernetes.io/cluster/venkat.k8s.local":"owned"}},"RemoveExtraRules":["port=443"],"Shared":null,"Tags":{"KubernetesCluster":"venkat.k8s.local","Name":"api-elb.venkat.k8s.local","kubernetes.io/cluster/venkat.k8s.local":"owned"}}],"Listeners":{"443":{"InstancePort":443,"SSLCertificateID":""}},"Scheme":null,"HealthCheck":{"Target":"SSL:443","HealthyThreshold":2,"UnhealthyThreshold":2,"Interval":10,"Timeout":5},"AccessLog":null,"ConnectionDraining":null,"ConnectionSettings":{"IdleTimeout":300},"CrossZoneLoadBalancing":null,"SSLCertificateID":""}
+I0906 07:00:15.598905    5428 executor.go:103] Tasks: 76 done / 77 total; 1 can run
+I0906 07:00:15.623592    5428 executor.go:103] Tasks: 77 done / 77 total; 0 can run
+Will create resources:
+  AutoscalingGroup/master-us-west-1a.masters.venkat.k8s.local
+        MinSize                 1
+        MaxSize                 1
+        Subnets                 [name:us-west-1a.venkat.k8s.local]
+        Tags                    {k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup: master-us-west-1a, k8s.io/role/master: 1, Name: master-us-west-1a.masters.venkat.k8s.local, KubernetesCluster: venkat.k8s.local}
+        Granularity             1Minute
+        Metrics                 [GroupDesiredCapacity, GroupInServiceInstances, GroupMaxSize, GroupMinSize, GroupPendingInstances, GroupStandbyInstances, GroupTerminatingInstances, GroupTotalInstances]
+        LaunchConfiguration     name:master-us-west-1a.masters.venkat.k8s.local
+
+  AutoscalingGroup/nodes.venkat.k8s.local
+        MinSize                 3
+        MaxSize                 3
+        Subnets                 [name:us-west-1a.venkat.k8s.local]
+        Tags                    {k8s.io/cluster-autoscaler/node-template/label/kops.k8s.io/instancegroup: nodes, k8s.io/role/node: 1, Name: nodes.venkat.k8s.local, KubernetesCluster: venkat.k8s.local}
+        Granularity             1Minute
+        Metrics                 [GroupDesiredCapacity, GroupInServiceInstances, GroupMaxSize, GroupMinSize, GroupPendingInstances, GroupStandbyInstances, GroupTerminatingInstances, GroupTotalInstances]
+        LaunchConfiguration     name:nodes.venkat.k8s.local
+
+  DHCPOptions/venkat.k8s.local
+        DomainName              us-west-1.compute.internal
+        DomainNameServers       AmazonProvidedDNS
+        Shared                  false
+        Tags                    {Name: venkat.k8s.local, KubernetesCluster: venkat.k8s.local, kubernetes.io/cluster/venkat.k8s.local: owned}
+
+  EBSVolume/a.etcd-events.venkat.k8s.local
+        AvailabilityZone        us-west-1a
+        VolumeType              gp2
+        SizeGB                  20
+        Encrypted               false
+        Tags                    {k8s.io/role/master: 1, kubernetes.io/cluster/venkat.k8s.local: owned, Name: a.etcd-events.venkat.k8s.local, KubernetesCluster: venkat.k8s.local, k8s.io/etcd/events: a/a}
+
+  EBSVolume/a.etcd-main.venkat.k8s.local
+        AvailabilityZone        us-west-1a
+        VolumeType              gp2
+        SizeGB                  20
+        Encrypted               false
+        Tags                    {KubernetesCluster: venkat.k8s.local, k8s.io/etcd/main: a/a, k8s.io/role/master: 1, kubernetes.io/cluster/venkat.k8s.local: owned, Name: a.etcd-main.venkat.k8s.local}
+
+  IAMInstanceProfile/masters.venkat.k8s.local
+        Shared                  false
+
+  IAMInstanceProfile/nodes.venkat.k8s.local
+        Shared                  false
+
+  IAMInstanceProfileRole/masters.venkat.k8s.local
+        InstanceProfile         name:masters.venkat.k8s.local id:masters.venkat.k8s.local
+        Role                    name:masters.venkat.k8s.local
+
+  IAMInstanceProfileRole/nodes.venkat.k8s.local
+        InstanceProfile         name:nodes.venkat.k8s.local id:nodes.venkat.k8s.local
+        Role                    name:nodes.venkat.k8s.local
+
+  IAMRole/masters.venkat.k8s.local
+        ExportWithID            masters
+
+  IAMRole/nodes.venkat.k8s.local
+        ExportWithID            nodes
+
+  IAMRolePolicy/masters.venkat.k8s.local
+        Role                    name:masters.venkat.k8s.local
+
+  IAMRolePolicy/nodes.venkat.k8s.local
+        Role                    name:nodes.venkat.k8s.local
+
+  InternetGateway/venkat.k8s.local
+        VPC                     name:venkat.k8s.local
+        Shared                  false
+        Tags                    {Name: venkat.k8s.local, KubernetesCluster: venkat.k8s.local, kubernetes.io/cluster/venkat.k8s.local: owned}
+
+  Keypair/apiserver-aggregator
+        Signer                  name:apiserver-aggregator-ca id:cn=apiserver-aggregator-ca
+        Subject                 cn=aggregator
+        Type                    client
+        Format                  v1alpha2
+
+  Keypair/apiserver-aggregator-ca
+        Subject                 cn=apiserver-aggregator-ca
+        Type                    ca
+        Format                  v1alpha2
+
+  Keypair/apiserver-proxy-client
+        Signer                  name:ca id:cn=kubernetes
+        Subject                 cn=apiserver-proxy-client
+        Type                    client
+        Format                  v1alpha2
+
+  Keypair/ca
+        Subject                 cn=kubernetes
+        Type                    ca
+        Format                  v1alpha2
+
+  Keypair/kops
+        Signer                  name:ca id:cn=kubernetes
+        Subject                 o=system:masters,cn=kops
+        Type                    client
+        Format                  v1alpha2
+
+  Keypair/kube-controller-manager
+        Signer                  name:ca id:cn=kubernetes
+        Subject                 cn=system:kube-controller-manager
+        Type                    client
+        Format                  v1alpha2
+
+  Keypair/kube-proxy
+        Signer                  name:ca id:cn=kubernetes
+        Subject                 cn=system:kube-proxy
+        Type                    client
+        Format                  v1alpha2
+
+  Keypair/kube-scheduler
+        Signer                  name:ca id:cn=kubernetes
+        Subject                 cn=system:kube-scheduler
+        Type                    client
+        Format                  v1alpha2
+
+  Keypair/kubecfg
+        Signer                  name:ca id:cn=kubernetes
+        Subject                 o=system:masters,cn=kubecfg
+        Type                    client
+        Format                  v1alpha2
+
+  Keypair/kubelet
+        Signer                  name:ca id:cn=kubernetes
+        Subject                 o=system:nodes,cn=kubelet
+        Type                    client
+        Format                  v1alpha2
+
+  Keypair/kubelet-api
+        Signer                  name:ca id:cn=kubernetes
+        Subject                 cn=kubelet-api
+        Type                    client
+        Format                  v1alpha2
+
+  Keypair/master
+        AlternateNames          [100.64.0.1, 127.0.0.1, api.internal.venkat.k8s.local, api.venkat.k8s.local, kubernetes, kubernetes.default, kubernetes.default.svc, kubernetes.default.svc.cluster.local]
+        Signer                  name:ca id:cn=kubernetes
+        Subject                 cn=kubernetes-master
+        Type                    server
+        Format                  v1alpha2
+
+  LaunchConfiguration/master-us-west-1a.masters.venkat.k8s.local
+        ImageID                 kope.io/k8s-1.9-debian-jessie-amd64-hvm-ebs-2018-03-11
+        InstanceType            m3.medium
+        SSHKey                  name:kubernetes.venkat.k8s.local-64:0c:ec:20:57:4b:b7:12:15:6c:da:1c:d0:ad:5d:e1 id:kubernetes.venkat.k8s.local-64:0c:ec:20:57:4b:b7:12:15:6c:da:1c:d0:ad:5d:e1
+        SecurityGroups          [name:masters.venkat.k8s.local]
+        AssociatePublicIP       true
+        IAMInstanceProfile      name:masters.venkat.k8s.local id:masters.venkat.k8s.local
+        RootVolumeSize          64
+        RootVolumeType          gp2
+        SpotPrice
+
+  LaunchConfiguration/nodes.venkat.k8s.local
+        ImageID                 kope.io/k8s-1.9-debian-jessie-amd64-hvm-ebs-2018-03-11
+        InstanceType            t2.medium
+        SSHKey                  name:kubernetes.venkat.k8s.local-64:0c:ec:20:57:4b:b7:12:15:6c:da:1c:d0:ad:5d:e1 id:kubernetes.venkat.k8s.local-64:0c:ec:20:57:4b:b7:12:15:6c:da:1c:d0:ad:5d:e1
+        SecurityGroups          [name:nodes.venkat.k8s.local]
+        AssociatePublicIP       true
+        IAMInstanceProfile      name:nodes.venkat.k8s.local id:nodes.venkat.k8s.local
+        RootVolumeSize          128
+        RootVolumeType          gp2
+        SpotPrice
+
+  LoadBalancer/api.venkat.k8s.local
+        LoadBalancerName        api-venkat-k8s-local-2ej051
+        Subnets                 [name:us-west-1a.venkat.k8s.local]
+        SecurityGroups          [name:api-elb.venkat.k8s.local]
+        Listeners               {443: {"InstancePort":443,"SSLCertificateID":""}}
+        HealthCheck             {"Target":"SSL:443","HealthyThreshold":2,"UnhealthyThreshold":2,"Interval":10,"Timeout":5}
+        ConnectionSettings      {"IdleTimeout":300}
+        SSLCertificateID
+
+  LoadBalancerAttachment/api-master-us-west-1a
+        LoadBalancer            name:api.venkat.k8s.local id:api.venkat.k8s.local
+        AutoscalingGroup        name:master-us-west-1a.masters.venkat.k8s.local id:master-us-west-1a.masters.venkat.k8s.local
+
+  ManagedFile/venkat.k8s.local-addons-bootstrap
+        Location                addons/bootstrap-channel.yaml
+
+  ManagedFile/venkat.k8s.local-addons-core.addons.k8s.io
+        Location                addons/core.addons.k8s.io/v1.4.0.yaml
+
+  ManagedFile/venkat.k8s.local-addons-dns-controller.addons.k8s.io-k8s-1.6
+        Location                addons/dns-controller.addons.k8s.io/k8s-1.6.yaml
+
+  ManagedFile/venkat.k8s.local-addons-dns-controller.addons.k8s.io-pre-k8s-1.6
+        Location                addons/dns-controller.addons.k8s.io/pre-k8s-1.6.yaml
+
+  ManagedFile/venkat.k8s.local-addons-kube-dns.addons.k8s.io-k8s-1.6
+        Location                addons/kube-dns.addons.k8s.io/k8s-1.6.yaml
+
+  ManagedFile/venkat.k8s.local-addons-kube-dns.addons.k8s.io-pre-k8s-1.6
+        Location                addons/kube-dns.addons.k8s.io/pre-k8s-1.6.yaml
+
+  ManagedFile/venkat.k8s.local-addons-limit-range.addons.k8s.io
+        Location                addons/limit-range.addons.k8s.io/v1.5.0.yaml
+
+  ManagedFile/venkat.k8s.local-addons-rbac.addons.k8s.io-k8s-1.8
+        Location                addons/rbac.addons.k8s.io/k8s-1.8.yaml
+
+  ManagedFile/venkat.k8s.local-addons-storage-aws.addons.k8s.io-v1.6.0
+        Location                addons/storage-aws.addons.k8s.io/v1.6.0.yaml
+
+  ManagedFile/venkat.k8s.local-addons-storage-aws.addons.k8s.io-v1.7.0
+        Location                addons/storage-aws.addons.k8s.io/v1.7.0.yaml
+
+  Route/0.0.0.0/0
+        RouteTable              name:venkat.k8s.local
+        CIDR                    0.0.0.0/0
+        InternetGateway         name:venkat.k8s.local
+
+  RouteTable/venkat.k8s.local
+        VPC                     name:venkat.k8s.local
+        Shared                  false
+        Tags                    {kubernetes.io/kops/role: public, Name: venkat.k8s.local, KubernetesCluster: venkat.k8s.local, kubernetes.io/cluster/venkat.k8s.local: owned}
+
+  RouteTableAssociation/us-west-1a.venkat.k8s.local
+        RouteTable              name:venkat.k8s.local
+        Subnet                  name:us-west-1a.venkat.k8s.local
+
+  SSHKey/kubernetes.venkat.k8s.local-64:0c:ec:20:57:4b:b7:12:15:6c:da:1c:d0:ad:5d:e1
+        KeyFingerprint          23:cf:f3:a4:03:69:20:b5:90:b0:40:49:0f:be:b5:52
+
+  Secret/admin
+
+  Secret/kube
+
+  Secret/kube-proxy
+
+  Secret/kubelet
+
+  Secret/system:controller_manager
+
+  Secret/system:dns
+
+  Secret/system:logging
+
+  Secret/system:monitoring
+
+  Secret/system:scheduler
+
+  SecurityGroup/api-elb.venkat.k8s.local
+        Description             Security group for api ELB
+        VPC                     name:venkat.k8s.local
+        RemoveExtraRules        [port=443]
+        Tags                    {Name: api-elb.venkat.k8s.local, KubernetesCluster: venkat.k8s.local, kubernetes.io/cluster/venkat.k8s.local: owned}
+
+  SecurityGroup/masters.venkat.k8s.local
+        Description             Security group for masters
+        VPC                     name:venkat.k8s.local
+        RemoveExtraRules        [port=22, port=443, port=2380, port=2381, port=4001, port=4002, port=4789, port=179]
+        Tags                    {Name: masters.venkat.k8s.local, KubernetesCluster: venkat.k8s.local, kubernetes.io/cluster/venkat.k8s.local: owned}
+
+  SecurityGroup/nodes.venkat.k8s.local
+        Description             Security group for nodes
+        VPC                     name:venkat.k8s.local
+        RemoveExtraRules        [port=22]
+        Tags                    {KubernetesCluster: venkat.k8s.local, kubernetes.io/cluster/venkat.k8s.local: owned, Name: nodes.venkat.k8s.local}
+
+  SecurityGroupRule/all-master-to-master
+        SecurityGroup           name:masters.venkat.k8s.local
+        SourceGroup             name:masters.venkat.k8s.local
+
+  SecurityGroupRule/all-master-to-node
+        SecurityGroup           name:nodes.venkat.k8s.local
+        SourceGroup             name:masters.venkat.k8s.local
+
+  SecurityGroupRule/all-node-to-node
+        SecurityGroup           name:nodes.venkat.k8s.local
+        SourceGroup             name:nodes.venkat.k8s.local
+
+  SecurityGroupRule/api-elb-egress
+        SecurityGroup           name:api-elb.venkat.k8s.local
+        CIDR                    0.0.0.0/0
+        Egress                  true
+
+  SecurityGroupRule/https-api-elb-0.0.0.0/0
+        SecurityGroup           name:api-elb.venkat.k8s.local
+        CIDR                    0.0.0.0/0
+        Protocol                tcp
+        FromPort                443
+        ToPort                  443
+
+  SecurityGroupRule/https-elb-to-master
+        SecurityGroup           name:masters.venkat.k8s.local
+        Protocol                tcp
+        FromPort                443
+        ToPort                  443
+        SourceGroup             name:api-elb.venkat.k8s.local
+
+  SecurityGroupRule/master-egress
+        SecurityGroup           name:masters.venkat.k8s.local
+        CIDR                    0.0.0.0/0
+        Egress                  true
+
+  SecurityGroupRule/node-egress
+        SecurityGroup           name:nodes.venkat.k8s.local
+        CIDR                    0.0.0.0/0
+        Egress                  true
+
+  SecurityGroupRule/node-to-master-tcp-1-2379
+        SecurityGroup           name:masters.venkat.k8s.local
+        Protocol                tcp
+        FromPort                1
+        ToPort                  2379
+        SourceGroup             name:nodes.venkat.k8s.local
+
+  SecurityGroupRule/node-to-master-tcp-2382-4000
+        SecurityGroup           name:masters.venkat.k8s.local
+        Protocol                tcp
+        FromPort                2382
+        ToPort                  4000
+        SourceGroup             name:nodes.venkat.k8s.local
+
+  SecurityGroupRule/node-to-master-tcp-4003-65535
+        SecurityGroup           name:masters.venkat.k8s.local
+        Protocol                tcp
+        FromPort                4003
+        ToPort                  65535
+        SourceGroup             name:nodes.venkat.k8s.local
+
+  SecurityGroupRule/node-to-master-udp-1-65535
+        SecurityGroup           name:masters.venkat.k8s.local
+        Protocol                udp
+        FromPort                1
+        ToPort                  65535
+        SourceGroup             name:nodes.venkat.k8s.local
+
+  SecurityGroupRule/ssh-external-to-master-0.0.0.0/0
+        SecurityGroup           name:masters.venkat.k8s.local
+        CIDR                    0.0.0.0/0
+        Protocol                tcp
+        FromPort                22
+        ToPort                  22
+
+  SecurityGroupRule/ssh-external-to-node-0.0.0.0/0
+        SecurityGroup           name:nodes.venkat.k8s.local
+        CIDR                    0.0.0.0/0
+        Protocol                tcp
+        FromPort                22
+        ToPort                  22
+
+  Subnet/us-west-1a.venkat.k8s.local
+        ShortName               us-west-1a
+        VPC                     name:venkat.k8s.local
+        AvailabilityZone        us-west-1a
+        CIDR                    172.20.32.0/19
+        Shared                  false
+        Tags                    {kubernetes.io/role/elb: 1, SubnetType: Public, Name: us-west-1a.venkat.k8s.local, KubernetesCluster: venkat.k8s.local, kubernetes.io/cluster/venkat.k8s.local: owned}
+
+  VPC/venkat.k8s.local
+        CIDR                    172.20.0.0/16
+        EnableDNSHostnames      true
+        EnableDNSSupport        true
+        Shared                  false
+        Tags                    {kubernetes.io/cluster/venkat.k8s.local: owned, Name: venkat.k8s.local, KubernetesCluster: venkat.k8s.local}
+
+  VPCDHCPOptionsAssociation/venkat.k8s.local
+        VPC                     name:venkat.k8s.local
+        DHCPOptions             name:venkat.k8s.local
+
+Must specify --yes to apply changes
+
+Cluster configuration has been created.
+
+Suggestions:
+ * list clusters with: kops get cluster
+ * edit this cluster with: kops edit cluster venkat.k8s.local
+ * edit your node instance group: kops edit ig --name=venkat.k8s.local nodes
+ * edit your master instance group: kops edit ig --name=venkat.k8s.local master-us-west-1a
+
+Finally configure your cluster with: kops update cluster venkat.k8s.local --yes
+
+root@ip-172-31-16-220:~# kops update cluster --name ${KOPS_CLUSTER_NAME} --yes
+
+*********************************************************************************
+
+A new kubernetes version is available: 1.10.5
+Upgrading is recommended (try kops upgrade cluster)
+
+More information: https://github.com/kubernetes/kops/blob/master/permalinks/upgrade_k8s.md#1.10.5
+
+*********************************************************************************
+
+I0906 07:02:05.793958    5611 apply_cluster.go:505] Gossip DNS: skipping DNS validation
+I0906 07:02:06.433369    5611 executor.go:103] Tasks: 0 done / 77 total; 30 can run
+I0906 07:02:07.400537    5611 vfs_castore.go:735] Issuing new certificate: "ca"
+I0906 07:02:07.481639    5611 vfs_castore.go:735] Issuing new certificate: "apiserver-aggregator-ca"
+I0906 07:02:08.539751    5611 executor.go:103] Tasks: 30 done / 77 total; 24 can run
+I0906 07:02:08.793960    5611 logging_retryer.go:60] Retryable error (Throttling: Rate exceeded
+        status code: 400, request id: c5498d14-b1a2-11e8-b4b1-0d912c26e6a0) from iam/PutRolePolicy - will retry after delay of 858ms
+I0906 07:02:08.798644    5611 logging_retryer.go:60] Retryable error (Throttling: Rate exceeded
+        status code: 400, request id: c5498c76-b1a2-11e8-a603-2378461e60f9) from iam/PutRolePolicy - will retry after delay of 691ms
+I0906 07:02:09.455416    5611 vfs_castore.go:735] Issuing new certificate: "kubelet-api"
+I0906 07:02:09.546569    5611 vfs_castore.go:735] Issuing new certificate: "kubelet"
+I0906 07:02:09.750863    5611 logging_retryer.go:60] Retryable error (Throttling: Rate exceeded
+        status code: 400, request id: c5c88102-b1a2-11e8-9b26-ad27cbe77f77) from iam/PutRolePolicy - will retry after delay of 1.906s
+I0906 07:02:09.872089    5611 logging_retryer.go:60] Retryable error (Throttling: Rate exceeded
+        status code: 400, request id: c5e2bfb1-b1a2-11e8-b750-91b0a3ea7e90) from iam/PutRolePolicy - will retry after delay of 1.482s
+I0906 07:02:09.894149    5611 vfs_castore.go:735] Issuing new certificate: "kops"
+I0906 07:02:10.382265    5611 vfs_castore.go:735] Issuing new certificate: "apiserver-aggregator"
+I0906 07:02:10.397597    5611 vfs_castore.go:735] Issuing new certificate: "kube-scheduler"
+I0906 07:02:10.402736    5611 vfs_castore.go:735] Issuing new certificate: "apiserver-proxy-client"
+I0906 07:02:10.410136    5611 vfs_castore.go:735] Issuing new certificate: "kubecfg"
+I0906 07:02:10.439532    5611 vfs_castore.go:735] Issuing new certificate: "kube-proxy"
+I0906 07:02:10.624305    5611 vfs_castore.go:735] Issuing new certificate: "kube-controller-manager"
+I0906 07:02:11.603890    5611 logging_retryer.go:60] Retryable error (Throttling: Rate exceeded
+        status code: 400, request id: c6f6790c-b1a2-11e8-9b26-ad27cbe77f77) from iam/PutRolePolicy - will retry after delay of 3.68s
+I0906 07:02:15.415280    5611 executor.go:103] Tasks: 54 done / 77 total; 19 can run
+I0906 07:02:15.601406    5611 launchconfiguration.go:380] waiting for IAM instance profile "nodes.venkat.k8s.local" to be ready
+I0906 07:02:25.936322    5611 executor.go:103] Tasks: 73 done / 77 total; 3 can run
+I0906 07:02:27.046244    5611 vfs_castore.go:735] Issuing new certificate: "master"
+I0906 07:02:27.745564    5611 executor.go:103] Tasks: 76 done / 77 total; 1 can run
+I0906 07:02:28.024006    5611 executor.go:103] Tasks: 77 done / 77 total; 0 can run
+I0906 07:02:28.171960    5611 update_cluster.go:290] Exporting kubecfg for cluster
+kops has set your kubectl context to venkat.k8s.local
+
+Cluster is starting.  It should be ready in a few minutes.
+
+Suggestions:
+ * validate cluster: kops validate cluster
+ * list nodes: kubectl get nodes --show-labels
+ * ssh to the master: ssh -i ~/.ssh/id_rsa admin@api.venkat.k8s.local
+ * the admin user is specific to Debian. If not using Debian please use the appropriate user based on your OS.
+ * read about installing addons at: https://github.com/kubernetes/kops/blob/master/docs/addons.md.
+
+root@ip-172-31-16-220:~#
+root@ip-172-31-16-220:~# kops edit cluster --name ${KOPS_CLUSTER_NAME}
+Edit cancelled, no changes made.
+root@ip-172-31-16-220:~# kubectl get
+You must specify the type of resource to get. Use "kubectl api-resources" for a complete list of supported resources.
+
+error: Required resource not specified.
+Use "kubectl explain <resource>" for a detailed description of that resource (e.g. kubectl explain pods).
+See 'kubectl get -h' for help and examples.
+root@ip-172-31-16-220:~# kubectl get pods
+No resources found.
+root@ip-172-31-16-220:~# kubectl get pods
+No resources found.
+root@ip-172-31-16-220:~# kubectl get nodes
+NAME                                          STATUS     ROLES     AGE       VERSION
+ip-172-20-48-167.us-west-1.compute.internal   NotReady   master    0s        v1.10.3
+root@ip-172-31-16-220:~# kubectl get nodes
+NAME                                          STATUS     ROLES     AGE       VERSION
+ip-172-20-48-167.us-west-1.compute.internal   NotReady   master    4s        v1.10.3
+root@ip-172-31-16-220:~# kops update cluster --name ${KOPS_CLUSTER_NAME} --yes
+
+*********************************************************************************
+
+A new kubernetes version is available: 1.10.5
+Upgrading is recommended (try kops upgrade cluster)
+
+More information: https://github.com/kubernetes/kops/blob/master/permalinks/upgrade_k8s.md#1.10.5
+
+*********************************************************************************
+
+I0906 07:07:28.284442    6198 apply_cluster.go:505] Gossip DNS: skipping DNS validation
+I0906 07:07:28.917357    6198 executor.go:103] Tasks: 0 done / 77 total; 30 can run
+I0906 07:07:29.646594    6198 executor.go:103] Tasks: 30 done / 77 total; 24 can run
+I0906 07:07:29.997767    6198 executor.go:103] Tasks: 54 done / 77 total; 19 can run
+I0906 07:07:30.198995    6198 executor.go:103] Tasks: 73 done / 77 total; 3 can run
+I0906 07:07:30.397344    6198 executor.go:103] Tasks: 76 done / 77 total; 1 can run
+I0906 07:07:30.426008    6198 executor.go:103] Tasks: 77 done / 77 total; 0 can run
+I0906 07:07:30.557124    6198 update_cluster.go:290] Exporting kubecfg for cluster
+kops has set your kubectl context to venkat.k8s.local
+
+Cluster changes have been applied to the cloud.
+
+
+Changes may require instances to restart: kops rolling-update cluster
+
+root@ip-172-31-16-220:~# kubectl get nodes
+NAME                                          STATUS     ROLES     AGE       VERSION
+ip-172-20-48-167.us-west-1.compute.internal   Ready      master    48s       v1.10.3
+ip-172-20-57-201.us-west-1.compute.internal   NotReady   node      2s        v1.10.3
+root@ip-172-31-16-220:~# kubectl get nodes
+NAME                                          STATUS     ROLES     AGE       VERSION
+ip-172-20-47-65.us-west-1.compute.internal    NotReady   node      2s        v1.10.3
+ip-172-20-48-167.us-west-1.compute.internal   Ready      master    50s       v1.10.3
+ip-172-20-57-201.us-west-1.compute.internal   NotReady   node      4s        v1.10.3
+root@ip-172-31-16-220:~# kubectl get nodes
+NAME                                          STATUS    ROLES     AGE       VERSION
+ip-172-20-47-65.us-west-1.compute.internal    Ready     node      42s       v1.10.3
+ip-172-20-48-167.us-west-1.compute.internal   Ready     master    1m        v1.10.3
+ip-172-20-52-242.us-west-1.compute.internal   Ready     node      39s       v1.10.3
+ip-172-20-57-201.us-west-1.compute.internal   Ready     node      44s       v1.10.3
+root@ip-172-31-16-220:~# kubectl cluster-info
+Kubernetes master is running at https://api-venkat-k8s-local-2ej051-406361015.us-west-1.elb.amazonaws.com
+KubeDNS is running at https://api-venkat-k8s-local-2ej051-406361015.us-west-1.elb.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+root@ip-172-31-16-220:~# kops get secrets kube --type secret -oplaintext
+HKcPZ4tGu6UwmPQ7TDLZ4zQvbWkrmNmm
+root@ip-172-31-16-220:~# kops get secrets admin --type secret -oplaintext
+1iUsfKZQoM9CJ3sW8E0FN0Icw8zpyhsG
+root@ip-172-31-16-220:~# kubectl create deployment nginx --image=nginx
+deployment.apps/nginx created
+root@ip-172-31-16-220:~# kubectl create service nodeport nginx --tcp=80:80
+service/nginx created
+root@ip-172-31-16-220:~# kubectl get svc
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   100.64.0.1     <none>        443/TCP        12m
+nginx        NodePort    100.64.36.78   <none>        80:31795/TCP   10s
+root@ip-172-31-16-220:~# kubectl get pods
+NAME                     READY     STATUS    RESTARTS   AGE
+nginx-56f766d96f-r87zj   1/1       Running   0          35s
+root@ip-172-31-16-220:~# curl http://54.241.133.58:31795
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+root@ip-172-31-16-220:~#
+root@ip-172-31-16-220:~# kops delete cluster --name=${KOPS_CLUSTER_NAME} --state=${KOPS_STATE_STORE} --yes
+TYPE                    NAME                                                                            ID
+autoscaling-config      master-us-west-1a.masters.venkat.k8s.local-20180906070215                       master-us-west-1a.masters.venkat.k8s.local-20180906070215
+autoscaling-config      nodes.venkat.k8s.local-20180906070215                                           nodes.venkat.k8s.local-20180906070215
+autoscaling-group       master-us-west-1a.masters.venkat.k8s.local                                      master-us-west-1a.masters.venkat.k8s.local
+autoscaling-group       nodes.venkat.k8s.local                                                          nodes.venkat.k8s.local
+dhcp-options            venkat.k8s.local                                                                dopt-0739324ce53a8b920
+iam-instance-profile    masters.venkat.k8s.local                                                        masters.venkat.k8s.local
+iam-instance-profile    nodes.venkat.k8s.local                                                          nodes.venkat.k8s.local
+iam-role                masters.venkat.k8s.local                                                        masters.venkat.k8s.local
+iam-role                nodes.venkat.k8s.local                                                          nodes.venkat.k8s.local
+instance                master-us-west-1a.masters.venkat.k8s.local                                      i-0d9094967cebc7c6a
+instance                nodes.venkat.k8s.local                                                          i-01784f9f4efdee347
+instance                nodes.venkat.k8s.local                                                          i-08e39226db76fd1ac
+instance                nodes.venkat.k8s.local                                                          i-0fdd6b0a2842d9891
+internet-gateway        venkat.k8s.local                                                                igw-056247749a4d42aab
+keypair                 kubernetes.venkat.k8s.local-64:0c:ec:20:57:4b:b7:12:15:6c:da:1c:d0:ad:5d:e1     kubernetes.venkat.k8s.local-64:0c:ec:20:57:4b:b7:12:15:6c:da:1c:d0:ad:5d:e1
+load-balancer           api.venkat.k8s.local                                                            api-venkat-k8s-local-2ej051
+route-table             venkat.k8s.local                                                                rtb-0fd82395508e97bf7
+security-group          api-elb.venkat.k8s.local                                                        sg-0ed4711a290ba8660
+security-group          masters.venkat.k8s.local                                                        sg-0208164029d3d26f6
+security-group          nodes.venkat.k8s.local                                                          sg-0a235ef8cf3c88de8
+subnet                  us-west-1a.venkat.k8s.local                                                     subnet-01e5281189b1ecbc1
+volume                  a.etcd-events.venkat.k8s.local                                                  vol-04fa14f130ab08f81
+volume                  a.etcd-main.venkat.k8s.local                                                    vol-040f37e80ba358c1b
+vpc                     venkat.k8s.local                                                                vpc-064abfc2ecde6db6b
+
+load-balancer:api-venkat-k8s-local-2ej051       ok
+autoscaling-group:master-us-west-1a.masters.venkat.k8s.local    ok
+keypair:kubernetes.venkat.k8s.local-64:0c:ec:20:57:4b:b7:12:15:6c:da:1c:d0:ad:5d:e1     ok
+autoscaling-group:nodes.venkat.k8s.local        ok
+instance:i-01784f9f4efdee347    ok
+instance:i-08e39226db76fd1ac    ok
+instance:i-0fdd6b0a2842d9891    ok
+instance:i-0d9094967cebc7c6a    ok
+internet-gateway:igw-056247749a4d42aab  still has dependencies, will retry
+iam-instance-profile:nodes.venkat.k8s.local     ok
+iam-instance-profile:masters.venkat.k8s.local   ok
+iam-role:nodes.venkat.k8s.local ok
+iam-role:masters.venkat.k8s.local       ok
+autoscaling-config:nodes.venkat.k8s.local-20180906070215        ok
+autoscaling-config:master-us-west-1a.masters.venkat.k8s.local-20180906070215    ok
+subnet:subnet-01e5281189b1ecbc1 still has dependencies, will retry
+volume:vol-040f37e80ba358c1b    still has dependencies, will retry
+volume:vol-04fa14f130ab08f81    still has dependencies, will retry
+security-group:sg-0ed4711a290ba8660     still has dependencies, will retry
+security-group:sg-0208164029d3d26f6     still has dependencies, will retry
+security-group:sg-0a235ef8cf3c88de8     still has dependencies, will retry
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0208164029d3d26f6
+        volume:vol-04fa14f130ab08f81
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        security-group:sg-0ed4711a290ba8660
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        volume:vol-040f37e80ba358c1b
+subnet:subnet-01e5281189b1ecbc1 still has dependencies, will retry
+volume:vol-040f37e80ba358c1b    still has dependencies, will retry
+volume:vol-04fa14f130ab08f81    still has dependencies, will retry
+internet-gateway:igw-056247749a4d42aab  still has dependencies, will retry
+security-group:sg-0ed4711a290ba8660     still has dependencies, will retry
+security-group:sg-0a235ef8cf3c88de8     still has dependencies, will retry
+security-group:sg-0208164029d3d26f6     still has dependencies, will retry
+Not all resources deleted; waiting before reattempting deletion
+        volume:vol-040f37e80ba358c1b
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        security-group:sg-0208164029d3d26f6
+        security-group:sg-0ed4711a290ba8660
+        volume:vol-04fa14f130ab08f81
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+volume:vol-040f37e80ba358c1b    still has dependencies, will retry
+subnet:subnet-01e5281189b1ecbc1 still has dependencies, will retry
+volume:vol-04fa14f130ab08f81    still has dependencies, will retry
+internet-gateway:igw-056247749a4d42aab  still has dependencies, will retry
+security-group:sg-0208164029d3d26f6     still has dependencies, will retry
+security-group:sg-0ed4711a290ba8660     still has dependencies, will retry
+security-group:sg-0a235ef8cf3c88de8     still has dependencies, will retry
+Not all resources deleted; waiting before reattempting deletion
+        volume:vol-04fa14f130ab08f81
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        security-group:sg-0ed4711a290ba8660
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        volume:vol-040f37e80ba358c1b
+        security-group:sg-0208164029d3d26f6
+volume:vol-040f37e80ba358c1b    ok
+subnet:subnet-01e5281189b1ecbc1 still has dependencies, will retry
+volume:vol-04fa14f130ab08f81    ok
+internet-gateway:igw-056247749a4d42aab  still has dependencies, will retry
+security-group:sg-0a235ef8cf3c88de8     still has dependencies, will retry
+security-group:sg-0208164029d3d26f6     ok
+security-group:sg-0ed4711a290ba8660     ok
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: d3b88f86-0563-4497-9073-245644d4b527
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 875a4479-a878-4e5e-b6fd-7beb6a824193
+I0906 07:35:30.105495    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 8185e09b-e228-445c-bd90-ca12d1af0543
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 096cb697-d865-4df2-9fab-03bff651a0ab
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 0bfbacfb-0e02-407b-844f-296e83491844
+I0906 07:35:40.131954    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 3fc03c27-07e7-4cda-9695-b0e1a7e26b69
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f8424ac8-a1a5-40cb-86f5-4bf110fe14bf
+I0906 07:35:50.146820    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 0b83d3ca-88f8-4cc7-a838-2e1f8a739784
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 649e9a17-bc36-4855-acb1-de1adbdf3d7b
+Not all resources deleted; waiting before reattempting deletion
+        internet-gateway:igw-056247749a4d42aab
+        security-group:sg-0a235ef8cf3c88de8
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        route-table:rtb-0fd82395508e97bf7
+I0906 07:36:00.164749    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: cbc54750-f9d5-4a43-b042-8014352815c3
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 894a9bfa-3862-48e4-ac70-d847240c664c
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: cdb729e9-26c8-4c5b-bb56-4b4096035650
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 622267a9-ac48-4abb-adda-b46015e90b0b
+I0906 07:36:10.192441    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 45759063-2f99-4057-8ea5-6d3a2335c0eb
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 26904011-912c-426e-b250-26f96f654072
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 84715a11-df86-4f0d-90df-5f56ecec7b61
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: b8256ff3-eee6-4f14-9761-20f8f95631a0
+I0906 07:36:20.322914    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f5ce168d-8530-4a7d-865d-64bbf3189b0b
+Not all resources deleted; waiting before reattempting deletion
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        route-table:rtb-0fd82395508e97bf7
+        internet-gateway:igw-056247749a4d42aab
+        security-group:sg-0a235ef8cf3c88de8
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 4b871f95-54a7-43cf-9f5b-417d404d9a50
+I0906 07:36:30.341828    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 2858b1f8-033d-4624-815e-880f580e6a44
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f42cf6fa-1290-444e-a353-9c673c7252b0
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 93a7caa2-daf2-4712-adf5-b163d2a68acb
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 1c5b03a0-95e6-4e31-940c-458855ee73ec
+I0906 07:36:40.363058    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: c35f12df-579f-4c00-8dfb-102972e40b8f
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+I0906 07:36:50.378477    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 7f2e86d8-3bdf-4218-8f13-bcc8d112ef82
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: e33cc1af-3ca2-4800-bd90-8a66ed3dc906
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: a8fbb572-72a8-4bda-864c-423f8f1cd1cd
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f7070d80-382e-44ba-9768-958e7883a5c3
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: e023a65e-6d2c-4fd5-8917-3d06e5a5d8a3
+I0906 07:37:00.401465    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 01d8c06a-21f1-4455-9cc3-3876bd5bf1f1
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: a3e2d918-efc7-4de5-8946-d2587a2330e0
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 015dd640-6e6e-4832-94ed-3d47e9db344f
+I0906 07:37:10.418335    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: b96f9666-4a66-4c24-a676-f5644e70f066
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: b4509372-aecc-4ad7-ace2-973a4a4019eb
+I0906 07:37:20.434158    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 68805d7f-fc6a-4cbd-98d2-e759adaf34e4
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: a51c97ba-2788-44f6-9021-398d195ae639
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+I0906 07:37:30.457718    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: c123dc6c-9645-4a2f-a6f8-892382e5e8e2
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 98f6f2d4-d001-445f-b1a7-128f434059f6
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 47c27d5f-90ed-4856-9877-d53744b8c3d6
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+I0906 07:37:40.477615    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 98231aa1-42a5-42f4-a92c-92cb78886644
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f5eabead-11d9-4db9-9e99-ceac129044d0
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: a07ee26a-feb5-4dee-b7fb-2b9b4483ebf7
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: bf875c3d-61aa-4b4c-b22e-ab1837a6a622
+I0906 07:37:50.490962    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 147f8a45-20c8-4418-a72c-15839b85fe5a
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 5c5e69d4-3385-437c-8e75-95443f0a04d5
+Not all resources deleted; waiting before reattempting deletion
+        internet-gateway:igw-056247749a4d42aab
+        security-group:sg-0a235ef8cf3c88de8
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        route-table:rtb-0fd82395508e97bf7
+I0906 07:38:00.511370    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 2122e444-4629-4d21-9e05-569b7cb6bdc5
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 82cfbaba-4b0a-43ea-9e38-31176cf3d78f
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f9cd5351-5ee5-416e-9a5e-d7977e05b6c4
+Not all resources deleted; waiting before reattempting deletion
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        route-table:rtb-0fd82395508e97bf7
+        internet-gateway:igw-056247749a4d42aab
+        security-group:sg-0a235ef8cf3c88de8
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: b08d411d-5cb3-46d9-9bd5-fb8392dc3c96
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 6d8033eb-0aa9-4319-a4b2-9cd22d507a3a
+I0906 07:38:10.532450    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 5bff6786-07d2-4638-bd2d-6e9a1854df76
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 0b188101-b3e0-47fc-8321-35bcfdda184f
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: b45e4bed-9649-4d23-86ca-1c9c6a9f2b26
+I0906 07:38:20.547581    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 1fc4dadf-73e4-4a31-8fc8-33bbe1514f9b
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+I0906 07:38:30.564716    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: ac8c891c-563a-4cb7-b6f4-fa6a6ffaed2f
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 54a5c100-e883-4cf8-a6b5-15bd0f6cb8f9
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 29d4192f-27c6-4316-a3f2-5023b956a35d
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+I0906 07:38:40.579576    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: d5a6eefc-ed55-4213-bd7c-17fd901a60a0
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 10b2ce89-23c0-4bd3-a424-4723bb77af9f
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f13d1c8a-c615-416f-a002-82df3670e9f9
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+I0906 07:38:50.594367    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 9ba55b8a-06e0-4a4c-8558-de4e1f1b0cce
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 40e4ec75-9ced-423a-965d-0503885e4d87
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 50113d70-64bd-40ec-bf3f-2edb027b101a
+Not all resources deleted; waiting before reattempting deletion
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        route-table:rtb-0fd82395508e97bf7
+        internet-gateway:igw-056247749a4d42aab
+        security-group:sg-0a235ef8cf3c88de8
+I0906 07:39:00.613533    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 97a0c330-3e16-47a9-a6d3-32f52c135cd0
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 8ef54b6a-7048-4ad4-82a8-40e7e4006c46
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 0f189e0b-af3a-4db9-ab24-5d6c68764f5f
+Not all resources deleted; waiting before reattempting deletion
+        internet-gateway:igw-056247749a4d42aab
+        security-group:sg-0a235ef8cf3c88de8
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        route-table:rtb-0fd82395508e97bf7
+I0906 07:39:10.630944    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 5322c9b6-c159-4f33-9bf1-fbe855f452c9
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 1b7a2021-3517-4673-84aa-91d0e5daa88b
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: e6ff2840-84be-4d0a-8105-2c19c2ecb0ac
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+I0906 07:39:20.648352    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 6dd9469f-2a88-4d65-933b-ccc61431c9a9
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: d033dea7-7bfd-466b-ad6d-19a566f5f022
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 85f94ac4-d135-4800-acfd-398ab737231a
+Not all resources deleted; waiting before reattempting deletion
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 9f71301e-be56-42ae-8869-0446d899ccf2
+I0906 07:39:30.660628    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 96976e98-8b76-434a-a8d1-c582fb57a9d0
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: b2ccf46f-5a63-4a25-b4ab-efd5e100d79d
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: fb58e047-6d4e-4eb4-b1f6-bbbecdc63e80
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: b08ecef3-246f-4798-b51d-e2b918177ef8
+I0906 07:39:40.678741    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: e9b303ee-d041-46f7-949b-cf03224f8cce
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 2735015a-2b54-4019-8132-9bea1321e16c
+I0906 07:39:50.690521    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: bbc85e28-0fb1-4f31-9a8e-51c752fade70
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 9c96d0cc-0b50-4cab-9ec7-f2eaf8074b34
+Not all resources deleted; waiting before reattempting deletion
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        route-table:rtb-0fd82395508e97bf7
+        internet-gateway:igw-056247749a4d42aab
+        security-group:sg-0a235ef8cf3c88de8
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 24223688-ded5-4e73-9abc-f63a74cf851d
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 358a6ec9-f143-47f3-af38-2a89bce71d94
+I0906 07:40:00.716510    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: eca53728-ddf4-40af-96ca-308f6e869ec1
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: c0e43b7a-24bf-4efe-b61b-7fea822c8d13
+I0906 07:40:10.726809    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 7db9173a-c4d6-47a8-83d9-6402f4dc6c2c
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 0bf42847-0e8c-413d-88b3-f998778a53ab
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+I0906 07:40:20.735176    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 4c040065-4a4f-4059-a723-13d172c2b0a7
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 2a975eed-4de2-4ccd-91c9-c0ded2aa0957
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: ff4bafcc-8ea3-49b9-9e92-00701e8269c4
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+I0906 07:40:30.747998    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: e2fc91cd-2bbb-4ec5-a6a2-749a4435bad3
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 4589e6e9-8441-4441-84ea-969526f98134
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: b203af9b-c599-4bec-9f45-bd4762d5349c
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 51134813-b862-44f9-ac32-be69d6a50a99
+I0906 07:40:40.766377    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 06e7fa63-d3fa-4d84-84e4-c1a0ca2d9b60
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 1d87cb39-2a62-44d1-a246-b1ac45c3eecf
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+I0906 07:40:50.780034    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 1a817ccd-55a7-4e43-bf05-b8139452f003
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: fe27a96c-2b8b-4d05-ae1f-f478ebaf2006
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 7bfda640-25e1-405e-8d78-67719a5125fe
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        route-table:rtb-0fd82395508e97bf7
+I0906 07:41:00.796510    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 720239dc-41e4-42ae-bb51-71d6e90aa9ba
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: e23c8e46-25e2-4f56-81f0-52b9a2b623d7
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: bda2fd17-e7c7-4d7b-ae31-2d9aa5fc5876
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+I0906 07:41:10.814025    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 6ab36b43-0125-439b-a91b-f29333ce8666
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: a8084a7f-1edc-426f-829a-e7989454ef55
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f9abdefd-bd9c-4492-bf9d-7fb97267f46f
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: d29fdc56-15e7-4f1c-9b01-3dccf21914d6
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 878280ab-230f-4c2c-b693-0915614a4a87
+I0906 07:41:20.843847    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 9b98b809-0e18-4785-89ac-eeb5d7821624
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 027ea9b2-2791-44ea-b7d5-8261ee450e63
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: cbdabfa9-258b-4cdd-ac1a-94dd2fbd9289
+I0906 07:41:30.860495    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: ee10c260-ecfa-4276-9806-327d61c1ab31
+Not all resources deleted; waiting before reattempting deletion
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 5d816dbd-4bd2-4518-8e76-af7cf118d0c4
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 17cc6bb6-fc94-40c4-8eb2-512956159e0e
+I0906 07:41:41.008560    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 73de590f-8bcd-490e-af90-30b92a54e392
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        internet-gateway:igw-056247749a4d42aab
+        security-group:sg-0a235ef8cf3c88de8
+        subnet:subnet-01e5281189b1ecbc1
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+I0906 07:41:51.019399    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: e07410f1-36c1-4337-9c06-11ce040d644a
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 30bcfe2b-8e38-4737-86de-0ccdc4ddf692
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: d86f5089-d6e6-4f2d-b104-2801f7a74e8a
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 57e61722-9a2d-4922-be0e-9b036204f2e7
+I0906 07:42:01.036352    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 51847159-f014-4d21-ad77-31c92bf08596
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: e32b18b2-a7bb-4474-9a13-4b0a0edda851
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+I0906 07:42:11.049500    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 3417e593-5e5f-47a6-afa2-c2cf816c5730
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 866b056c-4ac4-4ec0-a4ae-f90f6b63c203
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 1c657baf-1fec-4b25-9858-f2945b1f77cc
+Not all resources deleted; waiting before reattempting deletion
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+internet-gateway:igw-056247749a4d42aab  error deleting resources, will retry: error describing InternetGateway "igw-056247749a4d42aab": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f567a47b-2adb-4fad-a293-b05b93f65934
+I0906 07:42:21.065750    8965 errors.go:32] unexpected aws error code: "AuthFailure"
+subnet:subnet-01e5281189b1ecbc1 error deleting resources, will retry: error deleting Subnet "subnet-01e5281189b1ecbc1": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: 0ac79342-4220-4fe1-8cac-6b6317aa5a5a
+security-group:sg-0a235ef8cf3c88de8     error deleting resources, will retry: error describing SecurityGroup "sg-0a235ef8cf3c88de8": AuthFailure: AWS was not able to validate the provided access credentials
+        status code: 401, request id: f83f54e4-310e-4149-91a6-a4a1d9a0bd85
+Not all resources deleted; waiting before reattempting deletion
+        route-table:rtb-0fd82395508e97bf7
+        security-group:sg-0a235ef8cf3c88de8
+        internet-gateway:igw-056247749a4d42aab
+        dhcp-options:dopt-0739324ce53a8b920
+        vpc:vpc-064abfc2ecde6db6b
+        subnet:subnet-01e5281189b1ecbc1
+
+not making progress deleting resources; giving up
+root@ip-172-31-16-220:~#

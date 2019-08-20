@@ -1,0 +1,14 @@
+# kubectl create -f jenkins-vol-service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-vol-deploy
+  labels:
+    app: jenkins
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    nodePort: 30090
+  selector:
+    app: jenkins

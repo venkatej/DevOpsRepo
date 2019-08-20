@@ -1,0 +1,6 @@
+- hosts:
+    - rhel-1
+    - rhel-2
+  tasks:
+    - name: installing git package
+      yum: name=tree state=latest

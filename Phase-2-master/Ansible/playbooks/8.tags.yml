@@ -1,0 +1,18 @@
+# If we want to run only the specific task, we can achieve thru tags option.
+# ansible-playbook ubuntu.yml -t configure
+- hosts:
+    - ubuntu # # Make sure python avilable on target ubuntu instance, apt-get install python -y
+  tasks:
+    - name: ensure package cache is up to date
+      apt: update_cache=yes cache_valid_time=3600
+      tags: install
+    - name: install web server
+      apt: pkg=apache2 state=present
+      tags: install
+    - name: install index page
+      copy: src=index.html dest=/var/www/html/index.html backup=yes
+      tags: configure
+      notify: restart apache2
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted

@@ -1,0 +1,17 @@
+version: "3"
+services:
+  devopsweb:
+    image: venkatasykam/devopswebapp:1.0.14
+    deploy:
+      replicas: 3
+    ports:
+      - "8282:8080"
+
+  cicd:
+    image: jenkins:latest
+    ports:
+      - "8080:8080"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+

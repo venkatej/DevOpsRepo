@@ -1,0 +1,85 @@
+Main features:
+
+1. Containerization. - docker engine
+
+2. Managing conatiners - docker swarm / k8s
+
+
+Docker:
+-------
+
+0. Install required packages
+
+	docker engine
+	docker compose
+	(Optional)docker machine
+
+Docker SWARM
+
+1. Setup Cluster
+
+	1 - leader
+	2 - workers
+	
+		worker-1 : http://[W-1-ipAddess]:[port]
+		worker-2 : http://[W-2-ipAddess]:[port]
+	
+2. Create Service or Deploy Stack
+
+3. to Access: Launch app URL on any browser.
+
+Main features:
+
+1. Containerization. - docker engine
+
+2. Managing conatiners - docker swarm
+
+
+
+
+-----------------------
+Kubernetes:
+-----------
+
+0. Install required packages
+
+	Docker/rkt etc  	        --> Containerization
+	kubeadm/minikube/kops/julu etc  --> Creating/managing clusters
+	Kubelet				--> Managing nodes, pods, communication b/w the nodes/pods.
+	Kubectl				--> master to nodes, creating deployments etc.
+	Kubernetes-cni  		--> n/w.
+
+Kubernetes Cluster
+
+1. Setup Cluster
+
+	1 - master
+	2 - nodes (3. pods)
+	
+	initiate cluser: kubeadm init
+	Install n/w : kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+	
+	now cluster is ready with master 
+	
+	kubeadm join 172.31.30.175:6443 --token 34gfmk.4g0c10ygoo64uvip --discovery-token-ca-cert-hash sha256:e7bd3dd933ee1275240a3d31c1a85a100b944d9846f8189a83710674d86ca395
+	
+2. Create deployment: 
+
+	kubectl create deployment [deployment-name] --image=[image-name] 
+	
+	Ex: kubectl create deployment nginx --image=nginx 
+
+3. Create service for our deployment. (or expose the deployment to access publicly)
+
+	kubectl create service [portTypes] [deploymentName] --tcp=[ports]
+	
+	ex: kubectl create service nodeport nginx --tcp=80:80
+	
+4. to Access: Launch app URL on any browser with any IP address of any machine which is part of Kubernetes cluster.
+
+
+	
+	
+	
+	
+	

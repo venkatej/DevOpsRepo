@@ -1,0 +1,138 @@
+    1  rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    2  yum install -y ansible
+    3  ansible -version
+    4  ansible --version
+    5  ssh-keygen -t rsa
+    6  cat /root/.ssh/id_rsa.pub
+    7  ping 18.224.18.193
+    8  ssh 18.224.18.193
+    9  ansible 18.224.18.193 -a "ls -a"
+   10  ansible 18.224.18.193 -m shell -a 'touch newfile.txt'
+   11  vi /etc/ansible/hosts
+   12  ansible client -m shell -a 'touch newfile.txt'
+   13  echo "new file" > newfile-11.txt
+   14  vi copy-playbook.yml
+   15  cat copy-playbook.yml
+   16  ansible-playbook copy-playbook.yml
+   17  vi copy-playbook.yml
+   18  ansible-playbook copy-playbook.yml
+   19  vi copy-playbook.yml
+   20  ansible-playbook copy-playbook.yml
+   21  vi copy-playbook.yml
+   22  ansible-playbook copy-playbook.yml
+   23  vi copy-playbook.yml
+   24  ansible-playbook copy-playbook.yml
+   25  vi copy-playbook.yml
+   26  ansible-playbook copy-playbook.yml
+   27  vi copy-playbook.yml
+   28  ansible-playbook copy-playbook.yml
+   29  sudo pip install --upgrade pip
+   30  yum update
+   31  yum install python-pip python-wheel
+   32  pip install --upgrade pip
+   33  pip install boto
+   34  export AWS_ACCESS_KEY_ID=AKIA4AVHEKNHJIWLZJMM
+   35  export AWS_SECRET_ACCESS_KEY=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
+   36  vi ~/hosts
+   37  vi ec2-basic.yml
+   38  ll
+   39  ansible-playbook -i ./hosts ec2-basic.yml
+   40  pip install botocore
+   41  pip install boto3pip install boto3
+   42  ansible-playbook -i ./hosts ec2-basic.yml
+   43  vi ec2-basic.yml
+   44  ansible-playbook -i ./hosts ec2-basic.yml
+   45  vi ec2-basic.yml
+   46  ansible-playbook -i ./hosts ec2-basic.yml
+   47  vi ec2-basic-1.yml
+   48  ansible-playbook -i ./hosts ec2-basic-1.yml
+   49  vi ec2-basic-2.yml
+   50  ansible-playbook -i ./hosts ec2-basic-2.yml
+   51  vi ec2-basic-3.yml
+   52  ansible-playbook -i ./hosts ec2-basic-3.yml
+   53  vi ec2-basic-3.yml
+   54  ansible-playbook -i ./hosts ec2-basic-3.yml
+   55  vi ec2-basic-3.yml
+   56  ansible-playbook -i ./hosts ec2-basic-3.yml
+   57  vi playbook_name.yml
+   58  ansible-playbook playbook_name.yml –extra-vars volume-size=10 -e instance_type=t2.micro -e region=us-east-2 -e keypair=jenkins.pem -e count=1
+   59  ansible-playbook playbook_name.yml –-extra-vars volume-size=10 -e instance_type=t2.micro -e region=us-east-2 -e keypair=jenkins.pem -e count=1
+   60  vi playbook_name-1.yml
+   61  ansible-playbook playbook_name-1.yml –-extra-vars volume-size=10 -e instance_type=t2.micro -e region=us-east-2 -e keypair=jenkins.pem -e count=1
+   62  ansible-playbook playbook_name-1.yml -e instance_type=t2.micro -e region=us-east-2 -e keypair=jenkins.pem -e count=1
+   63  ll
+   64  cat hosts
+   65  vi ec2-basic-4.yml
+   66  ansible-playbook -i ./hosts ec2-basic-4.yml
+   67  vi ec2-basic-5.yml
+   68  ansible-playbook -i ./hosts ec2-basic-5.yml
+   69  vi ec2-basic-5.yml
+   70  ansible-playbook -i ./hosts ec2-basic-5.yml
+   71  vi ec2-basic-5.yml
+   72  ansible-playbook -i ./hosts ec2-basic-5.yml
+   73  ll
+   74  cat /etc/ansible
+   75  cat /etc/ansible/hosts
+   76  ansible-vault create aws_keys.yml
+   77  Ahmads-iMac:~ ahmad$ cat aws_keys.yml
+   78  $ANSIBLE_VAULT;1.1;AES256
+   79  63333038396266346466383037653433613336643164316566353030663162303434323339316330
+   80  3661333432313564646432333563343935323463346163630a656233303535333534346262616465
+   81  34373063393132336165313562613830306262646538656334643532303861366539336234363462
+   82  6438376165396638390a326334303263303530643965373539323239623931383839383539616631
+   83  38343534643061373361373239313264633562323936663130626537333164666262633636306464
+   84  39396531616335313563323339633237396131363938616262663536303664333065636334616163
+   85  35383631616231626661346532346666386338346336666535636263663334343364326237303366
+   86  61313764363331356330386639323666373433323733383636373635656335313234643364333832
+   87  3066
+   88  cat  aws_keys.yml
+   89  vi aws_provisioning.yml
+   90  vi ec2-basic-6.yml
+   91  ansible-playbook -i ./hosts ec2-basic-6.yml
+   92  ./hosts
+   93  vi hosts
+   94  cat aws_provisioning.yml
+   95  vi aws_provisioning.yml
+   96  cat aws_provisioning.yml
+   97  ansible-playbook -i hosts aws_provisioning.yml
+   98  vi aws_provisioning-1.yml
+   99  ansible-playbook -i hosts aws_provisioning-1.yml
+  100  vi aws_provisioning-1.yml
+  101  ansible-playbook -i hosts aws_provisioning-1.yml
+  102  cat hosts
+  103  cat /etc/ansible/hosts
+  104  cat hosts
+  105  ansible-playbook -i hosts aws_provisioning-1.yml -v
+  106  cat hosts
+  107  cat /etc/ansible/hosts
+  108  ssh 18.223.124.74
+  109  vi aws_provisioning-2.yml
+  110  ansible-playbook -i ./hosts aws_provisioning-2.yml -v
+  111  vi webser.yml
+  112  cat ./hosts
+  113  ansible-playbook -i ./hosts webser.yml -v
+  114  cat /etc/ansible/hosts
+  115  cat /hosts
+  116  cat ./hosts
+  117  vi ./hosts
+  118  vi aws_provisioning-3.yml
+  119  ansible-playbook -i ./hosts aws_provisioning-3.yml -v
+  120  cat ./hosts
+  121  ll
+  122  cat ./hosts
+  123  vi copy.yml
+  124  ansible-playbook -i ./hosts copy.yml -v
+  125  vi ansible.cfg
+  126  cd /root
+  127  ll
+  128  cd /root
+  129  cd .ssh
+  130  ll
+  131  exit
+  132  ll
+  133  vi ansible.cfg
+  134  cat aws_provisioning-3.yml
+  135  vi aws_provisioning-4.yml
+  136  ansible-playbook -i ./hosts aws_provisioning-4.yml -v
+  137  history
+[root@ip-172-31-29-19 ~]#

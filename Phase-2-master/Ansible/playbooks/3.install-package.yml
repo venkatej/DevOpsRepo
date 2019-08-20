@@ -1,0 +1,8 @@
+- hosts: all
+  tasks:
+    - name: installing tree package
+      yum: name=tree state=latest
+    - name: installing apache package
+      yum: name=httpd state=latest
+    - name: starting apache server
+      service: name=httpd state=started
