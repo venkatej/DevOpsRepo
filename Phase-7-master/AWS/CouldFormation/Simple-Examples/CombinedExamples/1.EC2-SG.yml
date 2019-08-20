@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple template to create EC2 instance
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      ImageId: "ami-035be7bafff33b6b6"
+      InstanceType: t2.micro
+      KeyName: aws-desk
+      SecurityGroups: 
+        - !Ref MySG
+      BlockDeviceMappings:
+        -
+          DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: io1
+            Iops: 200
+            DeleteOnTermination: true
+            VolumeSize: 10
+  MySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupName: SampleSG
+      GroupDescription: SampleSG
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 176.34.159.192/26
+          FromPort: '443'
+          ToPort: '443'
+        - IpProtocol: tcp
+          CidrIp: 177.71.207.128/26
+          FromPort: '80'
+          ToPort: '80'

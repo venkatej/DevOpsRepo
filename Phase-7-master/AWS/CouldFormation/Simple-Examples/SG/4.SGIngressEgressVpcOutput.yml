@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template to create SG instance with inbound and outbount rules by refering existing vpc id, and output the SG id
+Resources:
+  MySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupName: SampleSG
+      GroupDescription: SampleSG
+      VpcId: vpc-409c4f3a
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 176.34.159.192/26
+          FromPort: '443'
+          ToPort: '443'
+        - IpProtocol: tcp
+          CidrIp: 177.71.207.128/26
+          FromPort: '80'
+          ToPort: '80'
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          CidrIp: 176.34.159.192/26
+          FromPort: '443'
+          ToPort: '443'
+        - IpProtocol: tcp
+          CidrIp: 177.71.207.128/26
+          FromPort: '80'
+          ToPort: '80'
+Outputs:
+  SecurityGroupID:
+    Description: Security Group ID
+    Value:
+      Ref: MySG

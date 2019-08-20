@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple template to create 1 VPC, 3 subnets, 1 route table, 1 igw  and subnets
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties: 
+       CidrBlock: 10.1.0.0/16
+       EnableDnsSupport: true
+       EnableDnsHostnames: true
+       Tags:
+       - Key: Name
+         Value: MyVPC
+        
+  InternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+    
+  VPCGatewayAttachment:
+    Type: "AWS::EC2::VPCGatewayAttachment"
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref MyVPC
+      
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+      - Key: Name
+        Value: Public Subnets
+      - Key: Network
+        Value: Public
+        
+  Route:
+    DependsOn: VPCGatewayAttachment
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  Subnet01:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Subnet 01
+    Properties:
+      AvailabilityZone: us-east-1a
+      CidrBlock: 10.1.1.0/28
+      VpcId:
+        Ref: MyVPC
+      Tags:
+      - Key: Name
+        Value: MyVPC-Subnet01
+
+  Subnet02:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Subnet 02
+    Properties:
+      AvailabilityZone: us-east-1b
+      CidrBlock: 10.1.2.0/28
+      VpcId:
+        Ref: MyVPC
+      Tags:
+      - Key: Name
+        Value: MyVPC-Subnet02
+      
+  Subnet03:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Subnet 03
+    Properties:
+      AvailabilityZone: us-east-1c
+      CidrBlock: 10.1.3.0/28
+      VpcId:
+        Ref: MyVPC
+      Tags:
+      - Key: Name
+        Value: MyVPC-Subnet03

@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Demo about conditions
+
+Mappings: 
+  RegionMap: 
+    us-east-1: 
+      AMI: "ami-0ac019f4fcb7cb7e6"
+      TestAz: "us-east-1a"
+    ap-south-1: 
+      AMI: "ami-0d773a3b7bb2bb1c1"
+      TestAz: "ap-south-1a"
+
+Parameters: 
+  myKeyPair: 
+    Description: Amazon EC2 Key Pair
+    Type: "AWS::EC2::KeyPair::KeyName"
+
+  EC2InsType:
+    Type: String
+    Default: t2.micro
+    AllowedValues: 
+      - t2.micro
+      - m1.small
+      - m1.large
+    Description: Enter t2.micro, m1.small, or m1.large. Default is t2.micro.
+
+  EnvType: 
+    Description: Environment type.
+    Default: test
+    Type: String
+    AllowedValues: 
+      - prod
+      - test
+    ConstraintDescription: must specify prod or test.
+
+Conditions: 
+  CreateProdResources: !Equals [ !Ref EnvType, prod ]
+
+Resources: 
+  EC2Instance: 
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      KeyName: !Ref myKeyPair
+      InstanceType: !Ref EC2InsType
+# If the EnvType is prod then only NewVolume will be attached to the EC2 instance
+  MountPoint: 
+    Type: "AWS::EC2::VolumeAttachment"
+    Condition: CreateProdResources
+    Properties: 
+      InstanceId: 
+        !Ref EC2Instance
+      VolumeId: 
+        !Ref NewVolume
+      Device: /dev/sdh
+# If the EnvType is prod then only stack will create the NewVolume
+  NewVolume: 
+    Type: "AWS::EC2::Volume"
+    Condition: CreateProdResources
+    Properties: 
+      Size: 20
+      AvailabilityZone: 
+        !GetAtt EC2Instance.AvailabilityZone
+# If the EnvType is prod then only it prints the output of the NewVolume id
+Outputs: 
+  VolumeId: 
+    Condition: CreateProdResources
+    Value: 
+      !Ref NewVolume

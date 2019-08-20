@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple template to create EC2 instance
+Parameters:
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC where the Security Group will belong
+  PublicSubnets:
+    Description: |
+      Comma-delimited list of public subnets.
+    Type: List<AWS::EC2::Subnet::Id>
+  VpcAvailabilityZones:
+    Description: |
+      Comma-delimited list of Two Availability zones of the public subnets in the VPC.
+    Type: List<AWS::EC2::AvailabilityZone::Name>
+    Default: ""
+Resources:
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      Subnets: !Ref PublicSubnets
+  LBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+      - LoadBalancer
+      - TargetGroup
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref TargetGroup
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP 
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DependsOn: 
+      - LoadBalancer
+    Properties:
+      TargetType: instance
+      VpcId: 
+        Ref: VPC
+      Protocol: HTTP
+      Port: 8080
+      HealthCheckPath: /
+      HealthCheckIntervalSeconds: 10
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key:  deregistration_delay.timeout_seconds
+          Value:  30
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones:
+        Ref: VpcAvailabilityZones
+      VPCZoneIdentifier:
+          Ref: PublicSubnets
+      MinSize: 1
+      MaxSize: 3
+      DesiredCapacity: 2
+      LaunchConfigurationName:
+        Ref: LaunchConfig
+      TargetGroupARNs:
+        -
+          Ref: TargetGroup
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join [ "-", [ !Ref "AWS::StackName", "Jenkins", "Server", "ASG" ] ]
+          PropagateAtLaunch: true
+  # create launch configuration for ASG
+  LaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      BlockDeviceMappings:
+        -
+          DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: io1
+            Iops: 200
+            DeleteOnTermination: true
+            VolumeSize: 10
+      InstanceType: t2.micro
+      AssociatePublicIpAddress: true
+      KeyName: aws-desk
+      ImageId: ami-0ac019f4fcb7cb7e6
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo apt-get update -y && sudo apt-get install docker.io -y
+          sudo docker run -d -p 8080:8080 --name jenkins jenkins
+Outputs:
+  ReleaseNote:
+    Description: This is your website URL which is running in nginx webserver.
+    Value: !Join ["", [ "http://", !GetAtt LoadBalancer.DNSName ]]

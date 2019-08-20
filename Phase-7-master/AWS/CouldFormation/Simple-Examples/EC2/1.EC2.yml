@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple template to create EC2 instance
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      ImageId: "ami-035be7bafff33b6b6"
+      InstanceType: t2.micro
+      KeyName: aws-desk
+      BlockDeviceMappings:
+        -
+          DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: io1
+            Iops: 100
+            DeleteOnTermination: true
+            VolumeSize: 10

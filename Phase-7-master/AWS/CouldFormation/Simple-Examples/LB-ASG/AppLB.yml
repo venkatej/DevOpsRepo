@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple template to create EC2 instance
+Parameters:
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC where the Security Group will belong
+  PublicSubnets:
+    Description: |
+      Comma-delimited list of public subnets.
+    Type: List<AWS::EC2::Subnet::Id>
+  VpcAvailabilityZones:
+    Description: |
+      Comma-delimited list of Two Availability zones of the public subnets in the VPC.
+    Type: List<AWS::EC2::AvailabilityZone::Name>
+    Default: ""
+Resources:
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      Subnets: !Ref PublicSubnets
+  LBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+      - LoadBalancer
+      - TargetGroup
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref TargetGroup
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP 
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DependsOn: 
+      - LoadBalancer
+    Properties:
+      TargetType: instance
+      VpcId: 
+        Ref: VPC
+      Protocol: HTTP
+      Port: 8080
+      HealthCheckPath: /
+      HealthCheckIntervalSeconds: 10
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key:  deregistration_delay.timeout_seconds
+          Value:  30
+Outputs:
+  ReleaseNote:
+    Description: This is your website URL which is running in nginx webserver.
+    Value: !Join ["", [ "http://", !GetAtt LoadBalancer.DNSName ]]

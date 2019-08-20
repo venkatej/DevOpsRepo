@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple template to create AutoScaling group and Classic Load Balancer
+# Parameters to select the subnetids and availabile zones.
+Parameters:
+  PublicSubnets:
+    Description: |
+      Comma-delimited list of public subnets.
+    Type: List<AWS::EC2::Subnet::Id>
+  VpcAvailabilityZones:
+    Description: |
+      Comma-delimited list of Two Availability zones of the public subnets in the VPC.
+    Type: List<AWS::EC2::AvailabilityZone::Name>
+    Default: ""
+Resources:
+  # It will create classic load balancer
+  ElasticLoadBalancer:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      Subnets:
+          Ref: PublicSubnets
+      CrossZone: true
+      Listeners:
+        -
+          LoadBalancerPort: 80
+          InstancePort: 80
+          Protocol: "HTTP"
+      HealthCheck:
+        Target: "TCP:80"
+        HealthyThreshold: "3"
+        UnhealthyThreshold: "5"
+        Interval: 30
+        Timeout: 5
+      ConnectionSettings:
+        IdleTimeout: 600
+  # create autoscaling group with classic load balancer
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones:
+        Ref: VpcAvailabilityZones
+      VPCZoneIdentifier:
+          Ref: PublicSubnets
+      MinSize: 1
+      MaxSize: 3
+      DesiredCapacity: 2
+      LaunchConfigurationName:
+        Ref: LaunchConfig
+      LoadBalancerNames:
+        -
+          Ref: ElasticLoadBalancer
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join [ "-", [ !Ref "AWS::StackName", "Public", "Outer", "Proxy", "Server", "ASG" ] ]
+          PropagateAtLaunch: true
+  # create launch configuration for ASG
+  LaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      BlockDeviceMappings:
+        -
+          DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: io1
+            Iops: 200
+            DeleteOnTermination: true
+            VolumeSize: 10
+      InstanceType: t2.micro
+      AssociatePublicIpAddress: true
+      KeyName: aws-desk
+      ImageId: ami-0ac019f4fcb7cb7e6
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo apt-get update -y && sudo apt-get install nginx -y
+#print the value of elb dns name.
+Outputs:
+  ElbAddress:
+    Description: |
+      Outer Proxy ELB DNS Address.
+    Value: !Join ["", [ "http://", !GetAtt ElasticLoadBalancer.DNSName ]]

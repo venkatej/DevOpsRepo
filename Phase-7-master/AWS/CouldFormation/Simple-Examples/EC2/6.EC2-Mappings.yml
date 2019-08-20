@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple template to create EC2 instance
+Parameters: 
+  myKeyPair: 
+    Description: Amazon EC2 Key Pair
+    Type: "AWS::EC2::KeyPair::KeyName"
+
+  EC2InsType:
+    Type: String
+    Default: t2.micro
+    AllowedValues: 
+      - t2.micro
+      - m1.small
+      - m1.large
+    Description: Enter t2.micro, m1.small, or m1.large. Default is t2.micro.
+
+# set of mappings for ami based on the region
+Mappings: 
+  RegionMap: 
+    us-east-1:
+      RHEL: ami-011b3ccf1bd6db744
+      Ubuntu: ami-0ac019f4fcb7cb7e6
+    ap-south-1:
+      RHEL: ami-5b673c34
+      Ubuntu: ami-0d773a3b7bb2bb1c1
+
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", Ubuntu]
+      InstanceType: !Ref EC2InsType
+      KeyName: !Ref myKeyPair
+      BlockDeviceMappings:
+        -
+          DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: io1
+            Iops: 100
+            DeleteOnTermination: true
+            VolumeSize: 10
+      UserData:
+        Fn::Base64: !Sub | 
+          #!/bin/bash
+          sudo apt-get update -y && sudo apt-get install docker.io -y
+          docker run -d -p 8080:8080 --name jenkins jenkins
+Outputs:
+  ReleaseNote:
+    Description: This is your website URL which is running in nginx webserver.
+    Value: !Join ["", [ "http://", !GetAtt MyEC2Instance.PublicIp, ":8080/" ]]

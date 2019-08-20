@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template to create SG and take the vpcid, SG name and description as parameter
+Parameters:
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC where the Security Group will belong
+  SGName:
+    Type: String
+    Description: Name Tag of the Security Group
+  Description:
+    Type: String
+    Description: Description Tag of the Security Group
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "Security group Configuration"
+        Parameters:
+          - VPC
+          - SGName
+          - Description
+    ParameterLabels:
+      VPC:
+        default: "Selectt VPC ID"
+      SGName:
+        default: "Security Group Name"
+      Description:
+        default: "Description about the Security Group"
+
+Resources:
+  MySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupName: 
+        Ref: SGName
+      GroupDescription: 
+        Ref: Description
+      VpcId: 
+        Ref: VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 176.34.159.192/26
+          FromPort: '443'
+          ToPort: '443'
+        - IpProtocol: tcp
+          CidrIp: 177.71.207.128/26
+          FromPort: '80'
+          ToPort: '80'
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          CidrIp: 176.34.159.192/26
+          FromPort: '443'
+          ToPort: '443'
+        - IpProtocol: tcp
+          CidrIp: 177.71.207.128/26
+          FromPort: '80'
+          ToPort: '80'
+Outputs:
+  SecurityGroupID:
+    Description: Security Group ID
+    Value:
+      Ref: MySG

@@ -1,0 +1,136 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple template to create 1 VPC, 3 subnets, 1 route table, 1 igw  and subnets - refering the stackname in this template file
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties: 
+       CidrBlock: 10.1.0.0/16
+       EnableDnsSupport: true
+       EnableDnsHostnames: true
+       Tags:
+       - Key: Name
+         Value: !Sub "${AWS::StackName}-MyVPC"
+        
+  InternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+    
+  VPCGatewayAttachment:
+    Type: "AWS::EC2::VPCGatewayAttachment"
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref MyVPC
+      
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+      - Key: Name
+        Value: !Sub "${AWS::StackName}-Public Subnets"
+      - Key: Network
+        Value: Public
+        
+  Route:
+    DependsOn: VPCGatewayAttachment
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  Subnet01:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Subnet 01
+    Properties:
+      AvailabilityZone: us-east-1a
+      CidrBlock: 10.1.1.0/28
+      VpcId:
+        Ref: MyVPC
+      Tags:
+      - Key: Name
+        Value: !Sub "${AWS::StackName}-Subnet01"
+
+  Subnet02:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Subnet 02
+    Properties:
+      AvailabilityZone: us-east-1b
+      CidrBlock: 10.1.2.0/28
+      VpcId:
+        Ref: MyVPC
+      Tags:
+      - Key: Name
+        Value: !Sub "${AWS::StackName}-Subnet02"
+      
+  Subnet03:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Subnet 03
+    Properties:
+      AvailabilityZone: us-east-1c
+      CidrBlock: 10.1.3.0/28
+      VpcId:
+        Ref: MyVPC
+      Tags:
+      - Key: Name
+        Value: !Sub "${AWS::StackName}-Subnet03"
+
+  Subnet01RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref Subnet01
+      RouteTableId: !Ref RouteTable
+
+  Subnet02RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref Subnet02
+      RouteTableId: !Ref RouteTable
+
+  Subnet03RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref Subnet03
+      RouteTableId: !Ref RouteTable
+
+  MySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub "${AWS::StackName}-SampleSG"
+      GroupDescription: VPC specific SG
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 176.34.159.192/26
+          FromPort: '443'
+          ToPort: '443'
+        - IpProtocol: tcp
+          CidrIp: 177.71.207.128/26
+          FromPort: '80'
+          ToPort: '80'
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          CidrIp: 176.34.159.192/26
+          FromPort: '443'
+          ToPort: '443'
+        - IpProtocol: tcp
+          CidrIp: 177.71.207.128/26
+          FromPort: '80'
+          ToPort: '80'
+
+Outputs:
+
+  VpcId:
+    Description: The VPC Id
+    Value: !Ref MyVPC
+
+  SubnetIds:
+    Description: All subnet ids
+    Value: !Join [ ",", [ !Ref Subnet01, !Ref Subnet02, !Ref Subnet03 ] ]
+
+  SecurityGroups:
+    Description: Security group
+    Value: !Ref MySG
+

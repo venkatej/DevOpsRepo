@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple template to create EC2 instance
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      ImageId: "ami-0ac019f4fcb7cb7e6"
+      InstanceType: t2.micro
+      KeyName: aws-desk
+      BlockDeviceMappings:
+        -
+          DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: io1
+            Iops: 100
+            DeleteOnTermination: true
+            VolumeSize: 10
+      UserData:
+        Fn::Base64: !Sub | 
+          #!/bin/bash
+          sudo apt-get update -y && sudo apt-get install docker.io -y
+          docker run -d -p 8080:8080 --name jenkins jenkins
+Outputs:
+  ReleaseNote:
+    Description: This is your website URL which is running in nginx webserver.
+    Value: !Join ["", [ "http://", !GetAtt MyEC2Instance.PublicIp, ":8080/" ]]

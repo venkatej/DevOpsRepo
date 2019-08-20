@@ -1,0 +1,108 @@
+Refer: https://www.linode.com/docs/web-servers/nginx/use-nginx-reverse-proxy/
+
+Reverse Proxy setup: Nginx
+
+Assume there is a tomcat running and web app deployed to tomcat server.
+
+apt-get update -y && apt-get install nginx -y
+
+systemctl enable nginx
+
+vi /etc/nginx/conf.d/tomcat.conf
+
+	server {
+	  listen 80;
+	  listen [::]:80;
+
+	  server_name 3.83.103.108;
+
+	  location / {
+		  proxy_pass http://localhost:8080/DevOpsWebApp-1.0.0/;
+	  }
+	}
+
+cat /etc/nginx/conf.d/tomcat.conf
+
+sudo nginx -t
+
+sudo nginx -s reload
+
+launch the URL in any browser: http://3.83.103.108
+
+-------------------------------------
+
+If multiple applications are running on the same servers
+
+root@ip-172-31-83-71:~# cat /etc/nginx/conf.d/tomcat.conf
+server {
+  listen 80;
+  listen [::]:80;
+
+    root /usr/share/nginx/html;
+
+    index index.html index.htm;
+
+  server_name 3.83.103.108;
+
+  location / {
+        try_files $uri $uri/ =404;
+  }
+
+  location /tomcat/ {
+       proxy_set_header X-Real-IP  $remote_addr;
+       proxy_set_header X-Forwarded-For $remote_addr;
+       proxy_pass http://localhost:8080/;
+  }
+
+  location /devops/ {
+       proxy_set_header X-Real-IP  $remote_addr;
+       proxy_set_header X-Forwarded-For $remote_addr;
+       proxy_pass http://localhost:8080/DevOpsWebApp-1.0.0/;
+  }
+
+}
+
+
+launch the below URLs in any browser: 
+
+1. http://3.83.103.108 -- NGINX index page
+
+2. http://3.83.103.108:8080/tomcat/ - TOMCAT homepage
+
+3. http://3.83.103.108:8080/devops/ - DevOps web application homepage
+
+------------------------------------------------------------------------
+
+
+If multiple applications are running on the another server, give the server IP address instead of localhost.
+
+
+root@ip-172-31-83-71:~# cat /etc/nginx/conf.d/tomcat.conf
+server {
+  listen 80;
+  listen [::]:80;
+
+    root /usr/share/nginx/html;
+
+    index index.html index.htm;
+
+  server_name 3.83.103.108;
+
+  location / {
+        try_files $uri $uri/ =404;
+  }
+
+  location /tomcat/ {
+       proxy_set_header X-Real-IP  $remote_addr;
+       proxy_set_header X-Forwarded-For $remote_addr;
+       proxy_pass http://34.201.40.84:8080/;
+  }
+
+  location /devops/ {
+       proxy_set_header X-Real-IP  $remote_addr;
+       proxy_set_header X-Forwarded-For $remote_addr;
+       proxy_pass http://34.201.40.84:8080/DevOpsWebApp-1.0.0/;
+  }
+
+}
+
